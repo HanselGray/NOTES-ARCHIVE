@@ -241,9 +241,31 @@ LAN standards:
 		+ Checksum: Error detection code. CRC??
 
 	- WLAN - IEEE 802.11:
+		Structure: include base station = access point and stations with wireless network interfaces
+		
+		Base station modes of operation:
+			+ Basic Service Set (BSS): 
+			+ Ad-hoc: Stations also play the role of AP
+		
+		Standards: 
+			+ 802.11b: Band 2.4-5 GHz (unlicensed spectrum); Maximum speed 11 Mbps  
+			+ 802.11a: Band 5-6 GHz; Maximum speed 54 Mbps
+			+ 802.11g: Band 2.4-5 GHz; Maximum speed 54 Mbps
+			+ 802.11n: use multiple antennas (MIMO); Band 2.4-5 GHz; Maximum speed 200 Mbps
+		
+		Employ CSMA/CA for multiple access control
 
+		Channel and correction: 
+			+ Band is divided into 14 channels spaced 5Mhz apart.
+			+ Admin can choose working freq for AP or auto.
+			+ Station: need to connect to an AP by scanning channels and listen to intial frames (contains SSID and MAC address of AP) -> choose one AP.
 
+		
+		AP scanning mechanism:
+			+ Passive: AP send beacon frames first, then stations proceed to request connection.
+			+ Active: Stations broadcast request to find AP -> AP reply -> connection establish.
 
+		CSMA/CA
 			       
 
 
