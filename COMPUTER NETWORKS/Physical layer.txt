@@ -1,0 +1,7 @@
+- Twisted cable : needs amplification / repeat of signal after ~ 100m
+
+- For optic-fiber cables, in the order of descending distortion levels: 
+	Multimode, step-index -> multimode, graded-index -> single-mode
+
+- Advantages of multimode over single mode : allows the transmission of multiple channel of data within a single cable
+
