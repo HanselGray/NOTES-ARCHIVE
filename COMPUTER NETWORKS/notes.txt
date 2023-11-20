@@ -171,11 +171,77 @@ Flow control:
 
 Excercise: page 45-51
 
-Media access control (MAC):
+Medium access control:
 
-		
 
+░█▀▀█ ░█─░█ ─█▀▀█ ░█▀▀█ ▀▀█▀▀ ░█▀▀▀ ░█▀▀█ 　 █▀▀ 　 ── 　 ░█─── ─█▀▀█ ░█▄─░█ 
+░█─── ░█▀▀█ ░█▄▄█ ░█▄▄█ ─░█── ░█▀▀▀ ░█▄▄▀ 　 ▀▀▄ 　 ▀▀ 　 ░█─── ░█▄▄█ ░█░█░█ 
+░█▄▄█ ░█─░█ ░█─░█ ░█─── ─░█── ░█▄▄▄ ░█─░█ 　 ▄▄▀ 　 ── 　 ░█▄▄█ ░█─░█ ░█──▀█
+
+
+Devices and Data Forwarding:
+	- Devices: Hub, Switch, Bridge, and Router
+		+ Hub: only broadcast signal.
+		+ Switch: store and forward a data frame according to MAC address.
+		+ Bridge: dividing a network into multiple network segments.
+		+ Routers (later).
+
+Switch:
+	- Link-layer device, store and selectively forward frame to one-or-more outgoing links.  
+	- Transparent: hosts unaware of switches.
+	- Plug-and-play, self-learning: switches do not need to be configured.
 	
+	- Switch self-learning mechanism:
+
+		1. record incoming link, MAC address of sending host
+
+		2. index switch table using MAC destination address
+
+		3. if entry found for destination
+		   then {
+			if destination on segment from which frame arrived
+		   	then drop frame
+			else forward frame on interface indicated by entry
+		   }
+		   else flood /* forward on all interfaces except arriving interface */
+		 
+
+LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
+
+LAN standards:
+	- Logical link control (LLC) - IEEE 802.2: 
+		+ Connect with protocols of Network layer: IPX, DCE, IP,...
+		+ Functions: Multiplexing / Demultiplexing.
+		+ Flow control with 3 modes: Unacknowledged connnectionless, Acknowledged connectionless, Connection mode.
+		
+		+ Frame structure: 
+			1. DSAP and SSAP: Destination/Source Service Access Point (SAP); for multiplexing/demultiplexing of the upper layer.
+			2. Control: define Protocol Data Unit (PDU) to transfer and control.
+				a/ U-frame: send/recieve in connectionless mode (U: unnumbered)
+				b/ I-frame: frame with information (I: Information), used in acknowledged mode
+				c/ S-frame: for controlling (S: Supervisor)
+		
+		+ Practical LLC is often different from the above theoretical model.
+			1/ Error checking and flow control are used by some upper protocols (NetBIOS)
+			2/ U-frame encapsulate PDU without numbering (unnumbered) and therefore NO 
+			flow control or error checking are provided.
+			3/ Most upper protocols of LLC (TCP/IP) support error checking and flow control
+			
+	Hence, LLC is only use in Unacknowledged connectionless mode with U-frames.
+
+	- Ethernet LAN - IEEE 802.3:
+		+ Classical ethernet: connected in bus topology, use CSMA/CD for medium access control.
+		+ Modern ethernet: connected in star topology, use a central switch to control, exclude the need of medium access control.
+
+	- Ethernet frame:
+		An ethernet frame is divided into 4 parts.
+		+ Preamble: Marking the starting of a frame
+		+ Address: Physical addresses of source and destination (6-byte length).
+		+ Type: Uppper layer protocol (IP, Novell IPX, AppleTalk, …)
+		+ Checksum: Error detection code. CRC??
+
+	- WLAN - IEEE 802.11:
+
 
 
 			       
