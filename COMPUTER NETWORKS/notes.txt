@@ -208,7 +208,7 @@ Switch:
 
 LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 
-LAN standards:
+LLC:
 	- Logical link control (LLC) - IEEE 802.2: 
 		+ Connect with protocols of Network layer: IPX, DCE, IP,...
 		+ Functions: Multiplexing / Demultiplexing.
@@ -229,6 +229,7 @@ LAN standards:
 			
 	Hence, LLC is only use in Unacknowledged connectionless mode with U-frames.
 
+Ethernet:
 	- Ethernet LAN - IEEE 802.3:
 		+ Classical ethernet: connected in bus topology, use CSMA/CD for medium access control.
 		+ Modern ethernet: connected in star topology, use a central switch to control, exclude the need of medium access control.
@@ -240,32 +241,92 @@ LAN standards:
 		+ Type: Uppper layer protocol (IP, Novell IPX, AppleTalk, …)
 		+ Checksum: Error detection code. CRC??
 
-	- WLAN - IEEE 802.11:
-		Structure: include base station = access point and stations with wireless network interfaces
+Wireless LAN - WLAN - IEEE 802.11:
+	Structure: include base station = access point and stations with wireless network interfaces
 		
-		Base station modes of operation:
-			+ Basic Service Set (BSS): 
-			+ Ad-hoc: Stations also play the role of AP
+	Base station modes of operation:
+		+ Basic Service Set (BSS): 
+		+ Ad-hoc: Stations also play the role of AP
 		
-		Standards: 
-			+ 802.11b: Band 2.4-5 GHz (unlicensed spectrum); Maximum speed 11 Mbps  
-			+ 802.11a: Band 5-6 GHz; Maximum speed 54 Mbps
-			+ 802.11g: Band 2.4-5 GHz; Maximum speed 54 Mbps
-			+ 802.11n: use multiple antennas (MIMO); Band 2.4-5 GHz; Maximum speed 200 Mbps
+	Standards: 
+		+ 802.11b: Band 2.4-5 GHz (unlicensed spectrum); Maximum speed 11 Mbps  
+		+ 802.11a: Band 5-6 GHz; Maximum speed 54 Mbps
+		+ 802.11g: Band 2.4-5 GHz; Maximum speed 54 Mbps			
+		+ 802.11n: use multiple antennas (MIMO); Band 2.4-5 GHz; Maximum speed 200 Mbps
 		
-		Employ CSMA/CA for multiple access control
+	Employ CSMA/CA for multiple access control
 
-		Channel and correction: 
-			+ Band is divided into 14 channels spaced 5Mhz apart.
-			+ Admin can choose working freq for AP or auto.
-			+ Station: need to connect to an AP by scanning channels and listen to intial frames (contains SSID and MAC address of AP) -> choose one AP.
+	Channel and correction: 
+		+ Band is divided into 14 channels spaced 5Mhz apart.
+		+ Admin can choose working freq for AP or auto.
+		+ Station: need to connect to an AP by scanning channels and listen to intial frames (contains SSID and MAC address of AP) -> choose one AP.
 
 		
-		AP scanning mechanism:
-			+ Passive: AP send beacon frames first, then stations proceed to request connection.
-			+ Active: Stations broadcast request to find AP -> AP reply -> connection establish.
+	AP scanning mechanism:
+		+ Passive: AP send beacon frames first, then stations proceed to request connection.
+		+ Active: Stations broadcast request to find AP -> AP reply -> connection establish.
+		
+	Collision avoidance in WLAN:
+		- CSMA/CA: 
+			+ Sender: Channel available during DIFS then send entire frame.
+			 	  If channel busy then starting random back-off (waiting).
+			 	  At the end of back-off, send again, if no ACK then double back-off and try again.
+			+ Reciever: If recieve frame, send ACK after SIFS.
+		- Collision avoidance:
+			1. Sender send frame RTS (request-to-send) to BS using CSMA.
+			2. BS broadcast the frame CTS (clear-to-send CTS) to answer
+			3. All stations receive CTS
+				 Sender send data frame
+				 All other stations has to cancel the intention to send frames.
 
-		CSMA/CA
+Virtual LAN (VLAN):
+	- Purpose: scaling and administrative issue.
+	- Approach:
+		+ Port based VLAN: 1 physical switch acts as multiple virtual switches.
+			Properties:
+				Traffic isolation: frames to/from ports 1-8 can only reach ports 1-8
+					• can also define VLAN based on MAC addresses of endpoints, rather than switch port
+			 	
+				Dynamic membership: ports can be dynamically assigned among VLANs
+				
+				Forwarding between VLANS: done via routing (just as with separate switches)
+					• in practice vendors sell combined switches plus routers
+
+			*Trunk port: carries frames between VLANS defined over multiple physical switches
+
+		
+Access network:
+	- A type of telecommunications network which connects subscribers to their immediate service provider.
+	
+	- Architecture:
+		Hub: provider side
+		NIU (Network Interface Unit): Client side
+		Remote node (RN): 
+			+ In a broadcast network, RN distribute data from Hub to all NIU
+			+ In a switched network, RN receives data from Hub and distributes different data flows 
+			to different NIU
+		ONU (Optical network unit): A device to convert optical signal into electrical signal
+	- AON (Active optical network) and PON (Passive optical network):
+
+		AON: Active Optical Network
+			• Network use active technology (RN consumes electricity)
+			• Remote Node analyses and route packets to destinations
+			• Cable length could be up to 100km
+
+		PON: Passive Optical Network
+			• Passive Network (No external energy source is need for RN)
+			• RN (Splitter) only repeat signals to all ports 
+			• Upstream: MUX from different sources by TDM (TDM PON) or WDM (WDM PON)
+			• Limit cable length (20km)
+	
+	- GPON (Gigabit capable optical network):
+	 	+ GPON can be used to transport different types of data frame: Ethernet, ATM, voice …
+		+ Data from OLT to subscribers use a shared channel between OLT and RN
+		+ Downstream broadcast
+		+ Upstream TDM
+		+ Data encapsulted in GPON frames have fields of receiver ID (for downstream), and sender ID (for upstream) 
+
+
 			       
 
 
