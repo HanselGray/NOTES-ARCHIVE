@@ -1,0 +1,34 @@
+CHAPTER 1 SUMMARY:
+
+- Breaking ciphers: ciphertext-only, known-plaintext, choosen-plaintext, choosen-ciphertext attacks.
+- Classical ciphers:
+	+ Shift
+	+ Mono-alphabetical ciphers (broken by cryptanalysis)
+	+ Vigenere (can perform cryptanalysis as long as you know p: key-length)
+
+- Index of coincidence:
+	+ Formula
+	+ Attack to find keylength in Vigenere
+
+- On the topic of perfect secrecy.
+
+CHAPTER 2 SUMMARY:
+
+- Block-ciphers:
+
++ S-boxes structures;
++ DES
+	Weakness: Complement property -> Allow the attacker to lower the key-space needed to brute-force by half
++ AES (Rijndael)
+
+Block ciphers mode of operation
+
+ ECB:
+ CBC
+ CFB
+ OFB
+ CTR
+
+CHAPTER 3-4:
+
+PKC: applications : Hiding extremely important info / Digital signatures
