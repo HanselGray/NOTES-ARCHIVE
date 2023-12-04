@@ -329,5 +329,151 @@ Access network:
 
 			       
 
+▒█▀▀█ ▒█░▒█ ░█▀▀█ ▒█▀▀█ ▀▀█▀▀ ▒█▀▀▀ ▒█▀▀█ 　 ▄▀▀▄ 　 ░░ 　 ▀█▀ █▀▀▄ ▀▀█▀▀ █▀▀ █▀▀█ █▀▀▄ █▀▀ ▀▀█▀▀ 
+▒█░░░ ▒█▀▀█ ▒█▄▄█ ▒█▄▄█ ░▒█░░ ▒█▀▀▀ ▒█▄▄▀ 　 █▄▄░ 　 ▀▀ 　 ▒█░ █░░█ ░░█░░ █▀▀ █▄▄▀ █░░█ █▀▀ ░░█░░ 
+▒█▄▄█ ▒█░▒█ ▒█░▒█ ▒█░░░ ░▒█░░ ▒█▄▄▄ ▒█░▒█ 　 ▀▄▄▀ 　 ░░ 　 ▄█▄ ▀░░▀ ░░▀░░ ▀▀▀ ▀░▀▀ ▀░░▀ ▀▀▀ ░░▀░░ 
+
+█░░ █▀▀█ █░░█ █▀▀ █▀▀█ 
+█░░ █▄▄█ █▄▄█ █▀▀ █▄▄▀ 
+▀▀▀ ▀░░▀ ▄▄▄█ ▀▀▀ ▀░▀▀
+
+
+IP:
+	1/ Role: forwarding and routing between distant nodes.	
+	
+	2/ Principles:
+		- host: end systems.
+		- subnetworks: collection of hosts connected by 2nd layer devices.
+		- forwarding:   + direct: without routers
+				+ indirect: with routers
+
+	3/ Forwarding mechanism:
+		- Routing table
+		- Rule for sending packets: if dest IP has same prefix as one of the interface, send directly.
+					    else send to a router according to IP table.
+	
+	4/ IP characteristics:
+		- Not reliable / fast: no mechanism to recover lost/error data. When necessary, data integrity is ensured by TCP in Transport layer.
+		- Packets are processed independently.
+
+IP ADDRESS:
+
+	1/ IPv4:
+		- A 32-bit number identifying uniquely a network interface.
+		- For routing purpose, IP address of interfaces in the same subnetwork have the same prefix.
+		- IP addresses have two parts: the host id and the network id.
+
+	2/ Classful / Classless IP addresses (for IPv4 only):
+		- Classful:
+			+ Inefficient use of addressing space due to its hard classification of the address space into classes, making it inefficient to use all of address space.
+			+ IPv4 space is depleting fast -> classful needs to be replaced.
+
+		=> CIDR: Classless Inter Domain Routing:
+			+ IPv4 address have two parts: an address and a network mask, where the mask decide how many bits in the IPv4 address belongs to the network address part.
+			+ Special address in CIDR (always reserved): #NETWORK ADDRESS: address where the hostID's bits are all 0
+								     #BROADCAST ADDRESS: address where the hostID's bits are all 1
+
+	3/ Subnets:
+		- Subnet is a part of a network, hosts of a subnet communicate directly without reaching to layer 3.
+
+		- Subnet division principle: + Divide a IP range into sub-ranges of equal size.
+						+ Take some bits from HostID part to distinguish subnets.
+	4/ Addressing space of IPv4:
+		- In theory:
+			+ All between 0.0.0.0 ～ 255.255.255.255	
+			+ Some special address (RFC 1918)
+	
+	5/IPv6:
+		- 128 bit address ( 64 for network ID / 64 for host ID)
+		- Security feature is integrated	
+
+IP package:
+	- Version (4 bits)
+	- Header length (4 bits): length of header in range 5 -> 60 bits?
+	- DS: Used for QoS management by some router.
+	- Length (16 bits): total length of the packet including header.
+	- 16 bits Identifier – ID of the packet; Flag; Fragmentation offset: for fragmentation/reassemble purpose.
+	- TTL (8 bits): maximum number of hops the packet is allowed to perform.
+	- Protocol – upper layer protocol.
+	- Checksum: to detect corruption in the header of IPv4 data packets.
+	- Source IP (32 bits).
+	- Dest IP (32 bits).
+
+Internet Control Message Protocol (ICMP):
+
+	- ICMP is used in network layer for providing information exchange between sender and receivers.
+	- ICMP message: Type, Code, with 8 first bytes of the error IP message
+
+	1/ ICMP format:
+		- Type: type of ICMP message
+		- Code: cause of error
+		- Checksum
+		- Rest of header varies according on type
+
+	2/ Ping / traceroute:
+		- ping: 
+			+ Test a connection
+			+ Sender sends packet “ICMP echo request”
+			+ Receiver responses with “ICMP echo reply”
+			+ Data field contains the time stamp when the packet is sent
+
+		- traceroute: 
+			+ Calculate round-trip-time (RTT).
+			+ Sender send many packets to reciever (1st has TTL=1; 2nd has TTL=2; ...)
+			+ When nth packet arrives => Router destroy packet => send back an ICMP packet(type 11, code 0)
+			  containing the IP address of the nth router. RTT can be calculated based on the reply message.
+
+Network address translation (NAT):
+	
+	1/ NAT:
+		- NAT: all devices in local network share just one IPv4 address as far as outside world is concerned
+	
+	2/ Advantages:
+		- Just one IP address needed from provider ISP for all devices
+		- Can change addresses of host in local network without notifying 
+		  outside world
+		- Can change ISP without changing addresses of devices in local 
+		  network
+		- Security: devices inside local net not directly addressable, visible 
+		  by outside world
+
+	3/ Implementation:
+		- Outgoing datagrams: replace source IP&port of outgoing datagram to NAT IP&new port #'
+		- Remember the mapping of Inside IP/port to NAT IP/port using NAT table.
+		- Incoming datagrams: replace (NAT IP address, new port #) in destination fields of every incoming datagram with corresponding 
+					(source IP address, port #) stored in NAT table.
+	
+	4/ Static NAT:
+		- Each inside address is mapped to 1 outside NAT address.
+	
+	5/ Dynamic NAT:
+		- Each available public IP will be assigned for a private IP dynamically.
+
+	6/ PAT-NAT:
+		- Only use 1 public IP, map inside IP to public IP plus a port number dynamically.
+
+Address resolution protocol (ARP):
+
+	1/ ARP table:
+		- ARP table: each IP node (host, router) on LAN has a table.
+		- Contains  IP/MAC address mappings for some LAN nodes.
+		- Each record has a TTL, after TTL expire -> record deleted.
+
+	2/ ARP protocol:
+		- Not in table -> broadcast to find MAC address of reciever.
+		- Add recievers reply to ARP table.
+	
+	3/ Routing to another subnet in ARP:
+
+Dynamic Host Configuration Protocol (DHCP):
+	
+	1/ DHCP:
+		- Goal: host dynamically obtains IP address from network server when it 
+			“joins” network
+		- Can renew its lease on address in use
+		- Allows reuse of addresses (only hold address while connected/on)
+		- Support for mobile users who join/leave network 
+		
+
 
 
