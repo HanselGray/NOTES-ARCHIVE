@@ -2,4 +2,5 @@
 
 Archive for class-notes.
 Table of contents:
-abcd
+
+[DATA STRUCTURES AND ALGORITHM](/DATA%20STRUCTURES%20AND%20ALGORITHM)
