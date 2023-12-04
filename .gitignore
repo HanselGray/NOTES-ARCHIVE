@@ -1,3 +1,5 @@
-**/.pdf
-**/.pptx
-**/.docx
+**/*.pdf
+**/*.pptx
+**/*.docx
+/Slides/
+/Lectures/
