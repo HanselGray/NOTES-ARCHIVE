@@ -464,6 +464,9 @@ Address resolution protocol (ARP):
 		- Add recievers reply to ARP table.
 	
 	3/ Routing to another subnet in ARP:
+		- Case study: A wants to send to B in a different network via R.
+		- A know B address.
+		- 
 
 Dynamic Host Configuration Protocol (DHCP):
 	
@@ -473,6 +476,20 @@ Dynamic Host Configuration Protocol (DHCP):
 		- Can renew its lease on address in use
 		- Allows reuse of addresses (only hold address while connected/on)
 		- Support for mobile users who join/leave network 
+
+	2/ Overview:		
+		- host broadcasts DHCP discover msg [optional]
+		- DHCP server responds with DHCP offer msg [optional]
+		- host requests IP address: DHCP request msg
+		- DHCP server sends address: DHCP ack msg 
+	
+	3/ Extras:
+		DHCP can return more than just allocated IP address on subnet:
+			- address of first-hop router for client
+			- name and IP address of DNS sever
+			- network mask (indicating network versus host portion of address)
+
+
 		
 
 
