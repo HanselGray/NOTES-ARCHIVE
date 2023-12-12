@@ -306,8 +306,8 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 				3. Forwarding between VLANS: done via routing (just as with separate switches)
 					• in practice vendors sell combined switches plus routers
 			
-			> [!TIP]
-			> In a virtual LAN there's a port called a **trunk port**: carries frames between VLANS defined over multiple physical switches.
+> [!TIP]
+> In a virtual LAN there's a port called a **trunk port**: carries frames between VLANS defined over multiple physical switches.
 
 		
 7. Access network:
@@ -371,9 +371,9 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 				if dest IP has same prefix as one of the interface -> send directly.
 				else -> send to a router according to IP table.
 >[!IMPORTANT]	
- IP characteristics:
-	- Not reliable / fast: no mechanism to recover lost/error data. When necessary, data integrity is ensured by TCP in Transport layer.
-	- Packets are processed independently.
+> IP characteristics:
+> - Not reliable / fast: no mechanism to recover lost/error data. When necessary, data integrity is ensured by TCP in Transport layer.
+> - Packets are processed independently.
 
 2. IP ADDRESS:
 
