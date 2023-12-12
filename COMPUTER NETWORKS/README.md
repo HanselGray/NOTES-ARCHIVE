@@ -305,7 +305,7 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 				3. Forwarding between VLANS: done via routing (just as with separate switches)
 					• in practice vendors sell combined switches plus routers
 			
-			>[!TIP]
+			> [!TIP]
 			> In a virtual LAN there's a port called a **trunk port**: carries frames between VLANS defined over multiple physical switches.
 
 		
