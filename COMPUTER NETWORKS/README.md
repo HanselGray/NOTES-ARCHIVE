@@ -389,10 +389,7 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 
 		- CIDR: Classless Inter Domain Routing:
 			+ IPv4 address have two parts: an address and a network mask, where the mask decide how many bits in the IPv4 address belongs to the network address part.
-> [!CAUTION]	 
-> Special address in CIDR (always reserved): 
-> ***NETWORK ADDRESS***: address where the **hostID's** bits are all **0s**
-> ***BROADCAST ADDRESS***: address where the **hostID's** bits are all **1s**
+
 	3. Subnets:
 		- Subnet is a part of a network, hosts of a subnet communicate directly without reaching to layer 3.
 
@@ -408,6 +405,10 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 	5. IPv6:
 		- 128 bit address ( 64 for network ID / 64 for host ID)
 		- Security feature is integrated	
+> [!CAUTION]	 
+> Special address in CIDR (always reserved): 
+> ***NETWORK ADDRESS***: address where the **hostID's** bits are all **0s**
+> ***BROADCAST ADDRESS***: address where the **hostID's** bits are all **1s**
 
 3. IP package:
 	| Name | length (in bits) | Function |
