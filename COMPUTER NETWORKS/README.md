@@ -406,8 +406,10 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 		- 128 bit address ( 64 for network ID / 64 for host ID)
 		- Security feature is integrated	
 > [!CAUTION]	 
-> Special address in CIDR (always reserved): 
+> Special address in CIDR (always reserved):
+> 
 > ***NETWORK ADDRESS***: address where the **hostID's** bits are all **0s**
+> 
 > ***BROADCAST ADDRESS***: address where the **hostID's** bits are all **1s**
 
 3. IP package:
