@@ -174,8 +174,9 @@ Media access control (MAC):
 	| Switch   | Store and forward a data frame <br/>according to MAC address.        |
 	| Bridge | Dividing a network<br/>into multiple network segments. |
 
-	> [!CAUTION]
-	> Routers (later).
+> [!CAUTION]
+> Routers (later).
+	
 
 2. Switch:
 	- Link-layer device, store and selectively forward frame to one-or-more outgoing links.  
