@@ -1,4 +1,4 @@
-
+q
 
 # CHAPTER 1 - INTRODUCTION
 
@@ -268,6 +268,10 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 > [!TIP]
 > WLANs employ CSMA/CA for multiple access control
 
+- Frame structure:
+
+![802.11 Frame structure](/COMPUTER%20NETWORKS/FRAME-addressing%20in%20WLAN.png)
+ 
 - Channel and correction: 
 	+ Band is divided into 14 channels spaced 5Mhz apart.
 		
@@ -298,7 +302,7 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 					 Sender send data frame
 					 All other stations has to cancel the intention to send frames.
 
-![802.11 Frame structure](/COMPUTER%20NETWORKS/FRAME-addressing%20in%20WLAN.png)
+![RTS-CTS](RTS-CTS_Collision%20avoidance.png)
 
 ### 6. Virtual LAN (VLAN):
 - Purpose: scaling and administrative issue.
