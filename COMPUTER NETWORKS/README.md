@@ -20,8 +20,7 @@
 
 # CHAPTER 3 - PHYSICAL LAYER
 
-1. CABLES: 
-
+### 1. CABLES: 
 	- UTP: cheap, widely used, have weak resistance to noise, short transmission distance (100m - before the need of amplification/repeat)
 
 	- Coaxial: used in TV signal transmission or telephone networks; 
