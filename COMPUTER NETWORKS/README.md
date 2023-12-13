@@ -76,9 +76,10 @@
         - Variations: Manchester | Differential Manchester
             + Manchester: signal level change at middle of bit time determine the bit
             + Diff Manchester: signal level change at a bit interval determine the bit value.
+        
 !(Line encoding summary)[/LineEncodeSummary.png]
 	 	      				
-    4. Encoding digital data to analog signal:
+   4. Encoding digital data to analog signal:
 
         - Amplitude shift keying: 
             Use 2 different amplitude for 0s/1s, one level is typically 0.
