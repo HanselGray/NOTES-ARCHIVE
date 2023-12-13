@@ -77,7 +77,7 @@
             + Manchester: signal level change at middle of bit time determine the bit
             + Diff Manchester: signal level change at a bit interval determine the bit value.
         
-!(Line encoding summary)[https://github.com/HanselGray/NOTES-ARCHIVE/blob/main/COMPUTER%20NETWORKS/LineEncodeSummary.png]
+   [!(Line encode summary)[https://github.com/HanselGray/NOTES-ARCHIVE/blob/main/COMPUTER%20NETWORKS/LineEncodeSummary.png]]
 	 	      				
    4. Encoding digital data to analog signal:
 
