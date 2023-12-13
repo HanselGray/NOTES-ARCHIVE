@@ -69,7 +69,7 @@
             Not optimal for using in transmission line because the receiver needs to 
             distinguish 3 different levels of signal.
 
-    3. Biphase / Manchester:
+3. Biphase / Manchester:
 	
         - Properties: Always change signal level in the middle of bit time.
 
@@ -77,26 +77,26 @@
             + Manchester: signal level change at middle of bit time determine the bit
             + Diff Manchester: signal level change at a bit interval determine the bit value.
         
-   [!(Line encode summary)[https://github.com/HanselGray/NOTES-ARCHIVE/blob/main/COMPUTER%20NETWORKS/LineEncodeSummary.png]]
+!(Line encode summary)[/LineEncodeSummary.png]
 	 	      				
-   4. Encoding digital data to analog signal:
+4. Encoding digital data to analog signal:
 
-        - Amplitude shift keying: 
+   - Amplitude shift keying: 
             Use 2 different amplitude for 0s/1s, one level is typically 0.
             Easily impact by noise.
             Hard to sync signals.
             Used in optical cable.
 
-        - On-off keying: During a bit interval : 0 = no light; 1 = light and vice-versa.
+   - On-off keying: During a bit interval : 0 = no light; 1 = light and vice-versa.
 
-        - Frequency shift keying: Use 2 different frequencies to encode 0/1. 
-                    Low error rate.
-                    Use to transfer data in telephone lines.
+   - Frequency shift keying: Use 2 different frequencies to encode 0/1. 
+               Low error rate.
+               Use to transfer data in telephone lines.
                     
 
-        - Phase shift keying: Use different phase to encode data.
-                    Can be used to encode multiple bits at once.
-                    Can be combined with ASK.
+   - Phase shift keying: Use different phase to encode data.
+   	                 Can be used to encode multiple bits at once.
+     			Can be combined with ASK.
 
     5. Encoding analog data to digital signal:
         
