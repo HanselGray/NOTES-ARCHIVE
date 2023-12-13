@@ -33,6 +33,8 @@
 > [!WARNING]
 > It's FORKIN EXPENSIVE $$$
 
+![Optical fiber cable](Optical-fiber%20cable.png)
+
 ### 2. WIRELESS MEDIA:
 
 - Data transmission on different frequency band of electromagnetic waves
@@ -47,37 +49,37 @@
 	      the optimal times. This will increase the probability of error in received data.
 	 + DC-component: Encoding should avoid DC-component by having signal mean altitude to be around 0.
 
-    1. NRZ (Non return to zero):
+1. NRZ (Non return to zero):
 
-	    - NRZ-L: a bit 0/1 is determined by signal level
+   - NRZ-L: a bit 0/1 is determined by signal level
 
-	    - NRZ-I: a bit 0/1 is determined by signal level change
+   - NRZ-I: a bit 0/1 is determined by signal level change
 
-	    - **NRZ properties**: simple, but does not contain element supporting clock sync -> only use in encoding on magnetic storage
+   - **NRZ properties**: simple, but does not contain element supporting clock sync -> only use in encoding on magnetic storage
 
-    2. Bipolar AMI:
+2. Bipolar AMI:
 
-        - Properties: use more than 2 signal level for the 1-bit.
+  - Properties: use more than 2 signal level for the 1-bit.
 
-        - Variations: Alternate mark inversion | Pseudoternary
-            + Alternate mark inversion: 0 = no signal ; 1 = presence of signal, 
-            with 2 consecutive 1s having different signal level.
-            + Pseudoternary: The opposite of alternate mark inversion
+  - Variations: Alternate mark inversion | Pseudoternary
+        + Alternate mark inversion: 0 = no signal ; 1 = presence of signal, 
+          with 2 consecutive 1s having different signal level.
+        + Pseudoternary: The opposite of alternate mark inversion
 
-        \****Remark***: DC component = 0
+   - ****Remark***: DC component = 0
             Good sync when there's many bit in the non-zero level
             Not optimal for using in transmission line because the receiver needs to 
             distinguish 3 different levels of signal.
 
 3. Biphase / Manchester:
 	
-        - Properties: Always change signal level in the middle of bit time.
+     - Properties: Always change signal level in the middle of bit time.
 
-        - Variations: Manchester | Differential Manchester
-            + Manchester: signal level change at middle of bit time determine the bit
-            + Diff Manchester: signal level change at a bit interval determine the bit value.
+     - Variations: Manchester | Differential Manchester
+       + Manchester: signal level change at middle of bit time determine the bit
+       + Diff Manchester: signal level change at a bit interval determine the bit value.
         
-![Line encode summary](/COMPUTER%20NETWORKS/LineEncodeSummary.png)
+	![Line encode summary](/COMPUTER%20NETWORKS/LineEncodeSummary.png)
 	 	      				
 4. Encoding digital data to analog signal:
 
@@ -97,22 +99,25 @@
    - Phase shift keying: Use different phase to encode data.
    	                 Can be used to encode multiple bits at once.
      			Can be combined with ASK.
-    ![Digital to analog](/COMPUTER%20NETWORKS/Digital-AnalogEncodeSummary.png)
-    5. Encoding analog data to digital signal:
-        
-        **Shannon sampling theorem**: The sampling rate is be equal to or greater than twice the highest frequency of the signal, 
-                    then the original signal can be considered intact.
-        Example: maximum freq of human voice is 4300hz -> minimum sampling freq should be 8600hz.
-	
-        - Pulse Code Modulation:
-          ![Baud rate](/COMPUTER%20NETWORKS/LineEncodingRateSummary.png)
-	
-        - Delta modulation: Use a stair case function; if the approx falls below the signal -> 1 otherwise 0; the approximation level then is increase if it's a 1/ decrease otherwise.
-                    The staircase function has a delta (step-size) and a frequency. 
-                    Slow-change signal/ small delta: quantization error / granular noise. 
-                                Fast-change signal/ large delta: Slope Over load distortion.
+     
+![Digital to analog](/COMPUTER%20NETWORKS/Digital-AnalogEncodeSummary.png)
 
-    6. Analog data to analog signals:
+5. Encoding analog data to digital signal:
+        
+    **Shannon sampling theorem**: The sampling rate is be equal to or greater than twice the highest frequency of the signal, 
+                    then the original signal can be considered intact.
+    Example: maximum freq of human voice is 4300hz -> minimum sampling freq should be 8600hz.
+
+   - Pulse Code Modulation:
+     
+![Baud rate](/COMPUTER%20NETWORKS/LineEncodingRateSummary.png)
+	
+- Delta modulation: Use a stair case function; if the approx falls below the signal -> 1 otherwise 0; the approximation level then is increase if it's a 1/ decrease otherwise.
+     	-  The staircase function has a delta (step-size) and a frequency. 
+        -  Slow-change signal/ small delta: quantization error / granular noise. 
+        -  Fast-change signal/ large delta: Slope Over load distortion.
+
+6. Analog data to analog signals:
         - Combine the data signal with a carrier into a single signal.
         - 3 different methods:  
         
@@ -246,43 +251,43 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 ### 5. Wireless LAN - WLAN - IEEE 802.11:
 - Structure: include base station = access point and stations with wireless network interfaces
 		
-	- Base station modes of operation:
-		+ Basic Service Set (BSS): 
-		+ Ad-hoc: Stations also play the role of AP
-		
-	- Standards: 
+- Base station modes of operation:
+	+ Basic Service Set (BSS): 
+	+ Ad-hoc: Stations also play the role of AP
+
+- Standards: 
 	
-	| Name | Specifications |
-	| ---- | ---- |
-	| 802.11b | Band 2.4-5 GHz (unlicensed spectrum); Maximum speed 11 Mbps |
-	| 802.11a | Band 5-6 GHz; Maximum speed 54 Mbps |
-	| 802.11g | Band 2.4-5 GHz; Maximum speed 54 Mbps |			
-	| 802.11n | use multiple antennas (MIMO); Band 2.4-5 GHz; Maximum speed 200 Mbps |
+| Name | Specifications |
+| ---- | ---- |
+| 802.11b | Band 2.4-5 GHz (unlicensed spectrum); Maximum speed 11 Mbps |
+| 802.11a | Band 5-6 GHz; Maximum speed 54 Mbps |
+| 802.11g | Band 2.4-5 GHz; Maximum speed 54 Mbps |			
+| 802.11n | use multiple antennas (MIMO); Band 2.4-5 GHz; Maximum speed 200 Mbps |
 		
-	> [!TIP]
-		WLANs employ CSMA/CA for multiple access control
+> [!TIP]
+> WLANs employ CSMA/CA for multiple access control
 
-	- Channel and correction: 
-		+ Band is divided into 14 channels spaced 5Mhz apart.
+- Channel and correction: 
+	+ Band is divided into 14 channels spaced 5Mhz apart.
 		
-		+ Admin can choose working freq for AP or auto.
-		
-		+ Station: need to connect to an AP by scanning channels and listen to intial frames (contains SSID and MAC address of AP) -> choose one AP.
+	+ Admin can choose working freq for AP or auto.
+	
+	+ Station: need to connect to an AP by scanning channels and listen to intial frames (contains SSID and MAC address of AP) -> choose one AP.
 
 		
-	- AP scanning mechanism:
-		+ Passive: AP send beacon frames first, then stations proceed to request connection.
+- AP scanning mechanism:
+	+ Passive: AP send beacon frames first, then stations proceed to request connection.
 		
-		+ Active: Stations broadcast request to find AP -> AP reply -> connection establish.
+	+ Active: Stations broadcast request to find AP -> AP reply -> connection establish.
 		
-	- Collision avoidance in WLAN:
+- Collision avoidance in WLAN:
  
-		- CSMA/CA: 
-		
-				+ Sender: Channel available during DIFS then send entire frame.
-				 	  If channel busy then starting random back-off (waiting).
-				 	  At the end of back-off, send again, if no ACK then double back-off and try again.
-				+ Reciever: If recieve frame, send ACK after SIFS.
+	- CSMA/CA:
+   	 + Sender: Channel available during DIFS then send entire frame.
+
+   	   		If channel busy then starting random back-off (waiting).
+   	   		At the end of back-off, send again, if no ACK then double back-off and try again.
+    	+ Reciever: If recieve frame, send ACK after SIFS.
 		
 		- Collision avoidance:
 	
@@ -291,6 +296,8 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 				3. All stations receive CTS
 					 Sender send data frame
 					 All other stations has to cancel the intention to send frames.
+
+![802.11 Frame structure](/COMPUTER%20NETWORKS/FRAME-addressing%20in%20WLAN.png)
 
 ### 6. Virtual LAN (VLAN):
 - Purpose: scaling and administrative issue.
@@ -317,16 +324,18 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 - A type of telecommunications network which connects subscribers to their immediate service provider.
 	
 - Architecture:
-	
-	1. Hub: provider side
-	
-	2. NIU (Network Interface Unit): Client side
+ 
+![Optical access network](/COMPUTER%20NETWORKS/Fiber-to-the_MODEL.png) 	
 
-	3. Remote node (RN): 
-		- In a broadcast network, RN distribute data from Hub to all NIU
+1. Hub: provider side
+	
+2. NIU (Network Interface Unit): Client side
+
+3. Remote node (RN): 
+	- In a broadcast network, RN distribute data from Hub to all NIU
 				
-		- In a switched network, RN receives data from Hub and distributes different data flows to different NIU
-	4. ONU (Optical network unit): A device to convert optical signal into electrical signal.
+	- In a switched network, RN receives data from Hub and distributes different data flows to different NIU
+4. ONU (Optical network unit): A device to convert optical signal into electrical signal.
 
 	- AON (Active optical network) and PON (Passive optical network):
 
