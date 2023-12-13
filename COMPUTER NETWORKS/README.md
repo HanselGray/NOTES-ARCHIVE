@@ -123,37 +123,35 @@
 # CHAPTER 4 - DATALINK LAYER
 
 
-### LAYER PACKET: frame
+### 1. LAYER PACKET: frame
 
-### LAYER DEVICES: hub, switch
+### 2. LAYER DEVICES: hub, switch
 
 - Function: Framing, addressing, flow/error control, media access control.
 - The link layer is implemented inside a Network Interface Card (NIC)
 - Identifier: MAC address - 48-bit address, organized by IEEE (Insitute of Electrical and Electronics Engineers). MAC address is unchanged when changing networks(?)
 
-1. Error detection:
-	- Objective: ensure the data is transmitted correctly even under unreliable conditions
+### 3. Error detection:
+- Objective: ensure the data is transmitted correctly even under unreliable conditions
  Parity bit:	
 	
 	- Single bit parity: a bit at the end of a row, set to either 0 or 1 to ensure that the number of 1s is even.
 
 	- Two-dimensional parity: a bit at the end of rows and collumns, set to either 0 or 1 to ensure that the number of 1s in that row/collumn is even.  
 
-2. Checksums: 
- 
-			1. Basic checksum:
+### 2. Checksums: 
+ 1. Basic checksum:
+ 2. CRC:
 
-			3. CRC:
-
-3. Stop-and-wait ARQ(Automatically repeated requests):
-	- Stop and wait: Each packet sent would be reply with an ACK packet, only proceed to send the next packet if the previous packet is ACKed, otherwise continue to resend.
+### 3. Stop-and-wait ARQ(Automatically repeated requests):
+- Stop and wait: Each packet sent would be reply with an ACK packet, only proceed to send the next packet if the previous packet is ACKed, otherwise continue to resend.
 	
-			 Possible errors: Lost ACK 
-			 => Solution: Sender automatically resend after timeout (timeout >=1 RTT); 
-			 Receiver automatically discard packet if it's a duplicate.	  
+ Possible errors: Lost ACK 	
+ => Solution: Sender automatically resend after timeout (timeout >=1 RTT); 
+ Receiver automatically discard packet if it's a duplicate.	  
 
-4. Flow control:
-	- **Objective**: Make sure the sender doesn't overload the reciever, because when the reciever buffer frame is full, all arriving frame after that point would be dropped.
+### 4. Flow control:
+- **Objective**: Make sure the sender doesn't overload the reciever, because when the reciever buffer frame is full, all arriving frame after that point would be dropped.
 
 	- **Stop-and-wait**: like the above stop-and-wait ARQ, just without the ARQ part.
 
@@ -170,23 +168,23 @@ Exercises: page 45-51
 Media access control (MAC):
 
 # CHAPTER 5 - LAN
-1. Devices and Data Forwarding:
-	| Devices    | What does it do? |
-	| ----------- | :----------- |
-	| Hub     | Only broadcast signal.     |
-	| Switch   | Store and forward a data frame <br/>according to MAC address.        |
-	| Bridge | Dividing a network<br/>into multiple network segments. |
+### 1. Devices and Data Forwarding:
+| Devices    | What does it do? |
+| ----------- | :----------- |
+| Hub     | Only broadcast signal.     |
+| Switch   | Store and forward a data frame <br/>according to MAC address.        |
+| Bridge | Dividing a network<br/>into multiple network segments. |
 
 > [!CAUTION]
 > Routers (later).
 	
 
-2. Switch:
-	- Link-layer device, store and selectively forward frame to one-or-more outgoing links.  
-	- Transparent: hosts unaware of switches.
-	- Plug-and-play, self-learning: switches do not need to be configured.
-	
-	- Switch self-learning mechanism:
+### 2. Switch:
+- Link-layer device, store and selectively forward frame to one-or-more outgoing links.  
+- Transparent: hosts unaware of switches.
+- Plug-and-play, self-learning: switches do not need to be configured.
+
+- Switch self-learning mechanism:
 
 			1. record incoming link, MAC address of sending host
 
@@ -211,32 +209,31 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 				3. Connection mode.
 					 
 		
-		+ Frame structure: 
+	+ Frame structure: 
 			
-				1. DSAP and SSAP: Destination/Source Service Access Point (SAP); <br/> for multiplexing/demultiplexing of the upper layer.
+			1. DSAP and SSAP: Destination/Source Service Access Point (SAP); <br/> for multiplexing/demultiplexing of the upper layer.
 
-				2. Control: define Protocol Data Unit (PDU) to transfer and control.
-					a/ U-frame: send/recieve in connectionless mode (U: unnumbered)
-					b/ I-frame: frame with information (I: Information), used in acknowledged mode
-					c/ S-frame: for controlling (S: Supervisor)
+			2. Control: define Protocol Data Unit (PDU) to transfer and control.
+				a/ U-frame: send/recieve in connectionless mode (U: unnumbered)
+				b/ I-frame: frame with information (I: Information), used in acknowledged mode
+				c/ S-frame: for controlling (S: Supervisor)
 		
 		+ Practical LLC is often different from the above theoretical model.
-			>[!IMPORTANT]
-			>1/ Error checking and flow control are used by some upper protocols (**NetBIOS**)
-			2/ U-frame encapsulate PDU without numbering (unnumbered) and therefore **NO** 
-			flow control or error checking are provided.
-			3/ Most upper protocols of LLC (TCP/IP) support error checking and flow control
+	> [!IMPORTANT]
+ 	> 1/ Error checking and flow control are used by some upper protocols (**NetBIOS**)
+        > 2/ U-frame encapsulate PDU without numbering (unnumbered) and therefore **NO** flow control or error checking are provided.
+	> 3/ Most upper protocols of LLC (TCP/IP) support error checking and flow control
 	
 	> [!CAUTION]
 	> Due to the above reasons, LLC is only use in Unacknowledged connectionless mode with U-frames.
 
-4. Ethernet LAN - IEEE 802.3:
-	| Classical ethernet | Modern ethernet |
-	| ---- | ---- |
-	| connected in bus topology, use CSMA/CD for medium access control. | Connected in star topology, use a central switch to control, exclude the need of medium access control.
+### 4. Ethernet LAN - IEEE 802.3:
+| Classical ethernet | Modern ethernet |
+| ---- | ---- |
+| connected in bus topology, use CSMA/CD for medium access control. | Connected in star topology, use a central switch to control, exclude the need of medium access control.
 
 - Ethernet frame:
-		- An ethernet frame is divided into 4 parts.
+	- An ethernet frame is divided into 4 parts.
 	
 	| Name | Function | 
 	| ---- | ---- |
@@ -245,7 +242,7 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 	| Type | Upper layer protocol (IP, Novell IPX, AppleTalk, …) |
 	| Checksum | Error detection code. CRC?? |
 
-5. Wireless LAN - WLAN - IEEE 802.11:
+### 5. Wireless LAN - WLAN - IEEE 802.11:
 - Structure: include base station = access point and stations with wireless network interfaces
 		
 	- Base station modes of operation:
@@ -294,12 +291,13 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 					 Sender send data frame
 					 All other stations has to cancel the intention to send frames.
 
-6. Virtual LAN (VLAN):
-	- Purpose: scaling and administrative issue.
-	
-	- Approach:
-		+ Port based VLAN: 1 physical switch acts as multiple virtual switches.
-			Properties:
+### 6. Virtual LAN (VLAN):
+- Purpose: scaling and administrative issue.
+
+- Approach:
+	+ Port based VLAN: 1 physical switch acts as multiple virtual switches.
+
+ 	Properties:
 					
 				1. Traffic isolation: frames to/from ports 1-8 can only reach ports 1-8
 				can also define VLAN based on MAC addresses of endpoints, rather than switch port
@@ -313,21 +311,21 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 > In a virtual LAN there's a port called a **trunk port**: carries frames between VLANS defined over multiple physical switches.
 
 		
-7. Access network:
+### 7. Access network:
  
-	- A type of telecommunications network which connects subscribers to their immediate service provider.
+- A type of telecommunications network which connects subscribers to their immediate service provider.
 	
-	- Architecture:
+- Architecture:
 	
-		1. Hub: provider side
-		
-		2. NIU (Network Interface Unit): Client side
+	1. Hub: provider side
+	
+	2. NIU (Network Interface Unit): Client side
 
-		3. Remote node (RN): 
-		    - In a broadcast network, RN distribute data from Hub to all NIU
+	3. Remote node (RN): 
+		- In a broadcast network, RN distribute data from Hub to all NIU
 				
-		    - In a switched network, RN receives data from Hub and distributes different data flows 		to different NIU
-		4. ONU (Optical network unit): A device to convert optical signal into electrical signal.
+		- In a switched network, RN receives data from Hub and distributes different data flows to different NIU
+	4. ONU (Optical network unit): A device to convert optical signal into electrical signal.
 
 	- AON (Active optical network) and PON (Passive optical network):
 
@@ -356,58 +354,58 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 
 # CHAPTER 6 - INTERNET LAYER		
 
-1. IP:
+### 1. IP:
 
-	1. **Role**: forwarding and routing between distant nodes.	
-	
-	2. Principles:
-		- host: end systems.
-		- subnetworks: collection of hosts connected by 2nd layer devices.
-		- forwarding:   
-			- direct: without routers
-			- indirect: with routers
+1. **Role**: forwarding and routing between distant nodes.	
 
-	3. Forwarding mechanism:
-		- Routing table
-		- Rule for sending packets: 
+2. Principles:
+	- host: end systems.
+	- subnetworks: collection of hosts connected by 2nd layer devices.
+	- forwarding:   
+		- direct: without routers
+		- indirect: with routers
+
+3. Forwarding mechanism:
+	- Routing table
+	- Rule for sending packets: 
 			
-				if dest IP has same prefix as one of the interface -> send directly.
-				else -> send to a router according to IP table.
+			if dest IP has same prefix as one of the interface -> send directly.
+			else -> send to a router according to IP table.
 >[!IMPORTANT]	
 > IP characteristics:
 > - Not reliable / fast: no mechanism to recover lost/error data. When necessary, data integrity is ensured by TCP in Transport layer.
 > - Packets are processed independently.
 
-2. IP ADDRESS:
+### 2. IP ADDRESS:
 
-	1. IPv4:
-		- A 32-bit number identifying uniquely a network interface.
-		- For routing purpose, IP address of interfaces in the same subnetwork have the same prefix.
-		- IP addresses have two parts: the host id and the network id.
+1. IPv4:
+	- A 32-bit number identifying uniquely a network interface.
+	- For routing purpose, IP address of interfaces in the same subnetwork have the same prefix.
+	- IP addresses have two parts: the host id and the network id.
 
-	2. Classful / Classless IP addresses (for IPv4 only):
-		- Classful:
-			+ Inefficient use of addressing space due to its hard classification of the address space into classes, making it inefficient to use all of address space.
-			+ IPv4 space is depleting fast -> classful needs to be replaced.
+2. Classful / Classless IP addresses (for IPv4 only):
+	- Classful:
+		+ Inefficient use of addressing space due to its hard classification of the address space into classes, making it inefficient to use all of address space.
+		+ IPv4 space is depleting fast -> classful needs to be replaced.
 
-		- CIDR: Classless Inter Domain Routing:
-			+ IPv4 address have two parts: an address and a network mask, where the mask decide how many bits in the IPv4 address belongs to the network address part.
+	- CIDR: Classless Inter Domain Routing:
+		+ IPv4 address have two parts: an address and a network mask, where the mask decide how many bits in the IPv4 address belongs to the network address part.
 
-	3. Subnets:
-		- Subnet is a part of a network, hosts of a subnet communicate directly without reaching to layer 3.
+3. Subnets:
+	- Subnet is a part of a network, hosts of a subnet communicate directly without reaching to layer 3.
 
-		- Subnet division principle: 
-			+ Divide an IP range into sub-ranges of equal size.
-			+ Take some bits from HostID part to distinguish subnets.
+	- Subnet division principle: 
+		+ Divide an IP range into sub-ranges of equal size.
+		+ Take some bits from HostID part to distinguish subnets.
 			
-	4. Addressing space of IPv4:
-		- In theory:
-			+ All between 0.0.0.0 ～ 255.255.255.255	
-			+ Some special address (RFC 1918)
+4. Addressing space of IPv4:
+	- In theory:
+		+ All between 0.0.0.0 ～ 255.255.255.255	
+		+ Some special address (RFC 1918)
 	
-	5. IPv6:
-		- 128 bit address ( 64 for network ID / 64 for host ID)
-		- Security feature is integrated	
+5. IPv6:
+	- 128 bit address ( 64 for network ID / 64 for host ID)
+	- Security feature is integrated	
 > [!CAUTION]	 
 > Special address in CIDR (always reserved):
 > 
@@ -415,25 +413,24 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 > 
 > ***BROADCAST ADDRESS***: address where the **hostID's** bits are all **1s**
 
-3. IP package:
-	| Name | length (in bits) | Function |
-	| ---- | ---- | ---- |
-	| Version | 4 bits | Version?
-	| Header length | 4 bits | length of header in range 5 -> 60 bits? |
-	| DS | | Used for QoS management by some router. |
-	| Length | 16 bits | total length of the packet including header. |
-	| 16 bits Identifier – ID of the packet; Flag; Fragmentation offset | | for fragmentation/reassemble purpose. |
-	| TTL | 8 bits | maximum number of hops the packet is allowed to perform. |
-	| Protocol | | upper layer protocol. |
-	| Checksum | | to detect corruption in the header of IPv4 data packets. |
-	| Source IP | 32 bits | Source IP |
-	| Dest IP | 32 bits | Destination IP |
+### 3. IP package:
+| Name | length (in bits) | Function |
+| ---- | ---- | ---- |
+| Version | 4 bits | Version?
+| Header length | 4 bits | length of header in range 5 -> 60 bits? |
+| DS | | Used for QoS management by some router. |
+| Length | 16 bits | total length of the packet including header. |
+| 16 bits Identifier – ID of the packet; Flag; Fragmentation offset | | for fragmentation/reassemble purpose. |
+| TTL | 8 bits | maximum number of hops the packet is allowed to perform. |
+| Protocol | | upper layer protocol. |
+| Checksum | | to detect corruption in the header of IPv4 data packets. |
+| Source IP | 32 bits | Source IP |
+| Dest IP | 32 bits | Destination IP |
 
-4. Internet Control Message Protocol (ICMP):
+### 4. Internet Control Message Protocol (ICMP):
 
-	- ICMP is used in network layer for providing information exchange between sender and receivers.
-	- ICMP message: Type, Code, with 8 first bytes of the error IP message
-
+- ICMP is used in network layer for providing information exchange between sender and receivers.
+- ICMP message: Type, Code, with 8 first bytes of the error IP message
 	1. ICMP format:
 		- Type: type of ICMP message
 		- Code: cause of error
@@ -455,26 +452,26 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 				• When nth packet arrives => Router destroy packet => send back an ICMP packet (type 11, code 0)
 			    containing the IP address of the nth router. RTT can be calculated based on the reply message.
 
-5. Network address translation (NAT):
+### 5. Network address translation (NAT):
 	
-	1. NAT:
-		- NAT: all devices in local network share just one IPv4 address as far as outside world is concerned
-	
-	2. Advantages:
-		- Just one IP address needed from provider ISP for all devices
-		- Can change addresses of host in local network without notifying 
-		  outside world
-		- Can change ISP without changing addresses of devices in local 
-		  network
-		- Security: devices inside local net not directly addressable, visible 
-		  by outside world
+1. NAT:
+	- NAT: all devices in local network share just one IPv4 address as far as outside world is concerned
 
-	3. Implementation:
-		- Outgoing datagrams: replace source IP & port number of outgoing datagram to NAT IP & new port number
-		- Remember the mapping of Inside IP/port to NAT IP/port using NAT table.
-		- Incoming datagrams: replace (NAT IP address, port #) in destination fields of every incoming datagram with corresponding 
-					(source IP address, port #) stored in NAT table.
-		- Types of NAT:
+2. Advantages:
+	- Just one IP address needed from provider ISP for all devices
+	- Can change addresses of host in local network without notifying 
+	  outside world
+	- Can change ISP without changing addresses of devices in local 
+	  network
+	- Security: devices inside local net not directly addressable, visible 
+	  by outside world
+
+3. Implementation:
+	- Outgoing datagrams: replace source IP & port number of outgoing datagram to NAT IP & new port number
+	- Remember the mapping of Inside IP/port to NAT IP/port using NAT table.
+	- Incoming datagrams: replace (NAT IP address, port #) in destination fields of every incoming datagram with corresponding 
+	(source IP address, port #) stored in NAT table.
+	- Types of NAT:
 		
 		|    Name | Description |
 		| ---- | ---- |
@@ -482,42 +479,41 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 		|    Dynamic NAT | Each available public IP will be assigned for a private IP dynamically. |
 		|    PAT-NAT | Only use 1 public IP, map inside IP to public IP plus a port number dynamically. |
 
-6. Address resolution protocol (ARP):
+### 6. Address resolution protocol (ARP):
 
-	1. ARP table:
-		- ARP table: each IP node (host, router) on LAN has a table.
-		- Contains  IP/MAC address mappings for some LAN nodes.
-		- Each record has a TTL, after TTL expire -> record deleted.
+1. ARP table:
+	- ARP table: each IP node (host, router) on LAN has a table.
+	- Contains  IP/MAC address mappings for some LAN nodes.
+	- Each record has a TTL, after TTL expire -> record deleted.
 
-	2. ARP protocol:
-		- Not in table -> broadcast to find MAC address of reciever.
-		- Add recievers reply to ARP table.
+2. ARP protocol:
+	- Not in table -> broadcast to find MAC address of reciever.
+	- Add recievers reply to ARP table.
 	
-	3. Routing to another subnet in ARP:
-		- Case study: A wants to send to B in a different network via R.
-		- A know B address.
+3. Routing to another subnet in ARP:
+	- Case study: A wants to send to B in a different network via R.
+	- A know B address.
 		- 
-
-7. Dynamic Host Configuration Protocol (DHCP):
+### 7. Dynamic Host Configuration Protocol (DHCP):
 	
-	1. DHCP:
-		- Goal: host dynamically obtains IP address from network server when it 
-			“joins” network
-		- Can renew its lease on address in use
-		- Allows reuse of addresses (only hold address while connected/on)
-		- Support for mobile users who join/leave network 
+1. DHCP:
+	- Goal: host dynamically obtains IP address from network server when it 
+	“joins” network
+	- Can renew its lease on address in use
+	- Allows reuse of addresses (only hold address while connected/on)
+	- Support for mobile users who join/leave network 
 
-	2. Overview:		
-		- host broadcasts DHCP discover msg [optional]
-		- DHCP server responds with DHCP offer msg [optional]
-		- host requests IP address: DHCP request msg
-		- DHCP server sends address: DHCP ack msg 
+2. Overview:		
+	- host broadcasts DHCP discover msg [optional]
+	- DHCP server responds with DHCP offer msg [optional]
+	- host requests IP address: DHCP request msg
+	- DHCP server sends address: DHCP ack msg 
 	
-	3. Extras:
-		- DHCP can return more than just allocated IP address on subnet:
-		- address of first-hop router for client
-		- name and IP address of DNS sever
-		- network mask (indicating network versus host portion of address)
+3. Extras:
+	- DHCP can return more than just allocated IP address on subnet:
+	- address of first-hop router for client
+	- name and IP address of DNS sever
+	- network mask (indicating network versus host portion of address)
 
 
 
