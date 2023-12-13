@@ -10,3 +10,4 @@ Table of contents:
 
 [OPERATING-SYSTEM](/OPERATING%20SYSTEM)
 
+!(Line encode summary)[/COMPUTER NETWORKS/LineEncodeSummary.png]
