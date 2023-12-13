@@ -21,28 +21,30 @@
 # CHAPTER 3 - PHYSICAL LAYER
 
 ### 1. CABLES: 
-	- UTP: cheap, widely used, have weak resistance to noise, short transmission distance (100m - before the need of amplification/repeat)
+- UTP: cheap, widely used, have weak resistance to noise, short transmission distance (100m - before the need of amplification/repeat)
 
-	- Coaxial: used in TV signal transmission or telephone networks; 
-	  is being replaced by fiber-optics cable, can be used to link computers of short distance, transmission distance varied (RG11: ~1100m , RG58: ~185m)
+- Coaxial: used in TV signal transmission or telephone networks; 
+	 is being replaced by fiber-optics cable, can be used to link computers of short distance, transmission distance varied (RG11: ~1100m , RG58: ~185m)
 
-	- Fiber optics: used for long-range transmission; communication in metropolitan networks; connecting routers of ISP; or in backbone part of a LAN;
-	  *HAVE HUGE ADVANTAGES over other type of cables: large data rate, small and light, better isolation from electromagnetic environment, much further range of transmission before needing amp/repeat.
-	  *THE ONLY DISADVANTAGE? : It's FORKIN EXPENSIVE $$$
+- Fiber optics: used for long-range transmission; communication in metropolitan networks; connecting routers of ISP; or in backbone part of a LAN.
+> [!NOTE]
+> HAVE HUGE ADVANTAGES over other type of cables: large data rate, small and light, better isolation from electromagnetic environment, much further range of transmission before needing amp/repeat.
+> [!WARNING]
+> It's FORKIN EXPENSIVE $$$
 
-2. WIRELESS MEDIA:
+### 2. WIRELESS MEDIA:
 
-	- Data transmission on different frequency band of electromagnetic waves
-	- Broadcast, half-duplex: only send or receive at a time
-	- Easily affected by environment: reflections, noise/inteference or scattering
+- Data transmission on different frequency band of electromagnetic waves
+- Broadcast, half-duplex: only send or receive at a time
+- Easily affected by environment: reflections, noise/inteference or scattering
 
-3. DATA ENCODING: (how data/a bit is encoded over a medium)
+### 3. DATA ENCODING: (how data/a bit is encoded over a medium)
 
-	- Forms of encoding : digital/analog <----> digital/analog - total of 4 types
-	- Line encoding consideration: 
-	    + Clock recovery on receiver side: If the clock recovery is not ideal, then the signal to be decoded will not be sampled at
+- Forms of encoding : digital/analog <----> digital/analog - total of 4 types
+- Line encoding consideration: 
+	 + Clock recovery on receiver side: If the clock recovery is not ideal, then the signal to be decoded will not be sampled at
 	      the optimal times. This will increase the probability of error in received data.
-	    + DC-component: Encoding should avoid DC-component by having signal mean altitude to be around 0.
+	 + DC-component: Encoding should avoid DC-component by having signal mean altitude to be around 0.
 
     1. NRZ (Non return to zero):
 
@@ -73,8 +75,8 @@
         - Variations: Manchester | Differential Manchester
             + Manchester: signal level change at middle of bit time determine the bit
             + Diff Manchester: signal level change at a bit interval determine the bit value.
-	 	      			
-	
+!(Line encoding summary)[/LineEncodeSummary.png]
+	 	      				
     4. Encoding digital data to analog signal:
 
         - Amplitude shift keying: 
