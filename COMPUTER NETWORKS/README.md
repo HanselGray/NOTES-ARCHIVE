@@ -97,15 +97,16 @@
    - Phase shift keying: Use different phase to encode data.
    	                 Can be used to encode multiple bits at once.
      			Can be combined with ASK.
-
+    ![Digital to analog](/COMPUTER%20NETWORKS/Digital-AnalogEncodeSummary.png)
     5. Encoding analog data to digital signal:
         
         **Shannon sampling theorem**: The sampling rate is be equal to or greater than twice the highest frequency of the signal, 
                     then the original signal can be considered intact.
         Example: maximum freq of human voice is 4300hz -> minimum sampling freq should be 8600hz.
-
-        - Pulse Code Modulation.
-
+	
+        - Pulse Code Modulation:
+          ![Baud rate](/COMPUTER%20NETWORKS/LineEncodingRateSummary.png)
+	
         - Delta modulation: Use a stair case function; if the approx falls below the signal -> 1 otherwise 0; the approximation level then is increase if it's a 1/ decrease otherwise.
                     The staircase function has a delta (step-size) and a frequency. 
                     Slow-change signal/ small delta: quantization error / granular noise. 
