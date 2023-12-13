@@ -508,7 +508,7 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 3. Routing to another subnet in ARP:
 	- Case study: A wants to send to B in a different network via R.
 	- A know B address.
-		- 
+		 
 ### 7. Dynamic Host Configuration Protocol (DHCP):
 	
 1. DHCP:
