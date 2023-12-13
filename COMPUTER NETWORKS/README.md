@@ -224,14 +224,15 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 				b/ I-frame: frame with information (I: Information), used in acknowledged mode
 				c/ S-frame: for controlling (S: Supervisor)
 		
-		+ Practical LLC is often different from the above theoretical model.
-	> [!IMPORTANT]
- 	> 1/ Error checking and flow control are used by some upper protocols (**NetBIOS**)
-        > 2/ U-frame encapsulate PDU without numbering (unnumbered) and therefore **NO** flow control or error checking are provided.
-	> 3/ Most upper protocols of LLC (TCP/IP) support error checking and flow control
+	+ Practical LLC is often different from the above theoretical model.
+ 
+> [!IMPORTANT]
+> 1/ Error checking and flow control are used by some upper protocols (**NetBIOS**)
+> 2/ U-frame encapsulate PDU without numbering (unnumbered) and therefore **NO** flow control or error checking are provided.
+> 3/ Most upper protocols of LLC (TCP/IP) support error checking and flow control
 	
-	> [!CAUTION]
-	> Due to the above reasons, LLC is only use in Unacknowledged connectionless mode with U-frames.
+> [!CAUTION]
+> Due to the above reasons, LLC is only use in Unacknowledged connectionless mode with U-frames.
 
 ### 4. Ethernet LAN - IEEE 802.3:
 | Classical ethernet | Modern ethernet |
