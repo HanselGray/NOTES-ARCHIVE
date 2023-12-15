@@ -28,7 +28,7 @@
 
 - Fiber optics: used for long-range transmission; communication in metropolitan networks; connecting routers of ISP; or in backbone part of a LAN.
 > [!NOTE]
-> HAVE HUGE ADVANTAGES over other type of cables: large data rate, small and light, better isolation from electromagnetic environment, much further range of transmission before needing amp/repeat.
+> Fiber optic cables have **HUGE ADVANTAGES** over other type of cables: large data rate, small and light, better isolation from electromagnetic environment, much further range of transmission before needing amp/repeat.
 
 > [!WARNING]
 > It's FORKIN EXPENSIVE $$$
