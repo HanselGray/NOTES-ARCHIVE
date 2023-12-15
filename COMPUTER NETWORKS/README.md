@@ -212,6 +212,8 @@ Media access control (MAC):
 > [!IMPORTANT]
 LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 
+![LAN_topologies](LAN-topology.png)
+
 3. Logical link control (LLC) - IEEE 802.2: 
 	+ Connect with protocols of Network layer: IPX, DCE, IP, ...
 	+ Functions: Multiplexing / Demultiplexing.
@@ -421,7 +423,9 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 	- Subnet division principle: 
 		+ Divide an IP range into sub-ranges of equal size.
 		+ Take some bits from HostID part to distinguish subnets.
-			
+
+![Dividing_into_subnets](Dividing_to_2_subnets.png)
+   
 4. Addressing space of IPv4:
 	- In theory:
 		+ All between 0.0.0.0 ～ 255.255.255.255	
@@ -451,6 +455,8 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 | Source IP | 32 bits | Source IP |
 | Dest IP | 32 bits | Destination IP |
 
+![IP_packet_header](IP_header.png)
+
 ### 4. Internet Control Message Protocol (ICMP):
 
 - ICMP is used in network layer for providing information exchange between sender and receivers.
@@ -460,7 +466,7 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 		- Code: cause of error
 		- Checksum
 		- Rest of header varies according on type
-
+![ICMP_message_type](ICMP_messages_type.png)
 	2. Ping / traceroute:
 		- ping: 
 	 
