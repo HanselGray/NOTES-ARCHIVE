@@ -554,7 +554,7 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 	- host requests IP address: DHCP request msg
 	- DHCP server sends address: DHCP ack msg 
 	- DHCP diagram:
-![DHCP_client_server](DHCP_client-server_structure.png)
+![DHCP_client_server](DHCP_client-server_model.png)
 
 	- In-case DHCP server does not belong to the same subnet as the client, a DHCP relay is performed:
 ![DHCP_relay](DHCP_relay.png)
