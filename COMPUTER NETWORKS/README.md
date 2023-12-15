@@ -558,7 +558,10 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 
 	- In-case DHCP server does not belong to the same subnet as the client, a DHCP relay is performed:
 ![DHCP_relay](DHCP_relay.png)
-3. Extras:
+
+3. Extended using:
+![DHCP-extended](Extended_using_DHCP.png)
+4. Extras:
 	- DHCP can return more than just allocated IP address on subnet:
 	- address of first-hop router for client
 	- name and IP address of DNS sever
