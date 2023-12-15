@@ -553,7 +553,11 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 	- DHCP server responds with DHCP offer msg [optional]
 	- host requests IP address: DHCP request msg
 	- DHCP server sends address: DHCP ack msg 
-	
+	- DHCP diagram:
+![DHCP_client_server](DHCP_client_server_structure.png)
+
+	- In-case DHCP server does not belong to the same subnet as the client, a DHCP relay is performed:
+![DHCP_relay](DHCP_relay.png)
 3. Extras:
 	- DHCP can return more than just allocated IP address on subnet:
 	- address of first-hop router for client
