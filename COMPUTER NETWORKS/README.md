@@ -417,7 +417,8 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 
 	- CIDR: Classless Inter Domain Routing:
 		+ IPv4 address have two parts: an address and a network mask, where the mask decide how many bits in the IPv4 address belongs to the network address part.
-  		+ Example of network mask.
+  		+ For each network mask, the part with consecutive 1s decides how many bits of the IP address belongs to the network address part, whilst the 0s determine the host address part. 
+  		+ Example of network mask:
 ![Network_mask](Network_mask.png)  
 
 3. Subnets:
