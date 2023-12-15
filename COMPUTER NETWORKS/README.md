@@ -517,12 +517,18 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 3. Routing to another subnet in ARP:
 	- Case study: A wants to send to B in a different network via R.
 	- A know B address.
-![routing_](routing_to_another_subnet_1.png)
-![routing_](routing_to_another_subnet_2.png)
-![routing_](routing_to_another_subnet_3.png)
-![routing_](routing_to_another_subnet_4.png)
-![routing_](routing_to_another_subnet_5.png)
-![routing_](routing_to_another_subnet_6.png)
+![routing_](Routing_to_another_subnet_1.png)
+
+![routing_](Routing_to_another_subnet_2.png)
+
+![routing_](Routing_to_another_subnet_3.png)
+
+![routing_](Routing_to_another_subnet_4.png)
+
+![routing_](Routing_to_another_subnet_5.png)
+
+![routing_](Routing_to_another_subnet_6.png)
+
 ### 7. Dynamic Host Configuration Protocol (DHCP):
 	
 1. DHCP:
