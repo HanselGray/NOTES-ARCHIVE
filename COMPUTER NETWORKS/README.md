@@ -1,4 +1,4 @@
-q
+
 
 # CHAPTER 1 - INTRODUCTION
 
@@ -228,7 +228,9 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
  
 > [!IMPORTANT]
 > 1/ Error checking and flow control are used by some upper protocols (**NetBIOS**)
+> 
 > 2/ U-frame encapsulate PDU without numbering (unnumbered) and therefore **NO** flow control or error checking are provided.
+> 
 > 3/ Most upper protocols of LLC (TCP/IP) support error checking and flow control
 	
 > [!CAUTION]
