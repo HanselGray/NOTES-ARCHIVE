@@ -516,8 +516,7 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 	
 3. Routing to another subnet in ARP:
 	- Case study: A wants to send to B in a different network via R.
-	- A know B address.
-  
+	- A know B address.  
 ![routing_1](Routing_to_another_subnet_1.png)
 
 ![routing_2](Routing_to_another_subnet_2.png)
