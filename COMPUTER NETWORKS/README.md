@@ -412,7 +412,8 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 2. Classful / Classless IP addresses (for IPv4 only):
 	- Classful:
 		+ Inefficient use of addressing space due to its hard classification of the address space into classes, making it inefficient to use all of address space.
-		+ IPv4 space is depleting fast -> classful needs to be replaced.
+		+ IPv4 space is depleting fast -> classful needs to be replaced. 
+![Classful_IP](Classful_IP_address_structure.png)
 
 	- CIDR: Classless Inter Domain Routing:
 		+ IPv4 address have two parts: an address and a network mask, where the mask decide how many bits in the IPv4 address belongs to the network address part.
