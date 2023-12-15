@@ -147,7 +147,14 @@
 
 ### 2. Checksums: 
  1. Basic checksum:
+
  2. CRC:
+ ![CRC_1](CRC_1.png)
+ ![CRC_2](CRC_2.png)
+- After calculation, the CRC code would be append to the end of the frame and send.
+- Checking for errors using CRC:
+![CRC_check](CRC_check.png)
+- if there is no remainder -> no errors.
 
 ### 3. Stop-and-wait ARQ(Automatically repeated requests):
 - Stop and wait: Each packet sent would be reply with an ACK packet, only proceed to send the next packet if the previous packet is ACKed, otherwise continue to resend.
