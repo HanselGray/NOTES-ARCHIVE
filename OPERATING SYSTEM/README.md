@@ -330,3 +330,508 @@ blocked ⇒ Cannot make use of multi-thread.
 
 >[!WARNING]
 > Threading problem: The result of parallel running threads depends on the order of accessing the sharing variable
+
+### 3. CPU SCHEDULING
+
+1. Basic concepts:
+
+    - System only have 1 processor: only 1 process running at a time. <br>
+    Process is executed until it must wait, typically for the completion of some I/O request
+
+        - In a simple system: CPU is not utilized during this time -> wasted CPU time.       
+        - Multiprogramming system: try to use this time productively, give CPU for another process
+
+> [!NOTE]  
+> Scheduling is a fundamental OS’s function
+>
+> Switching CPU between processes means utilizing the system more efficiently
+
+- Typical process execution cycle:
+    - Process execution consists of a cycle of CPU execution and I/O wait
+    - Begins with a CPU burst
+    - followed by an I/O burst
+    - CPU burst → I/O burst → CPU burst → I/O burst → . . . 
+    * End: the last CPU burst will end with a system request to terminate execution
+
+- Process classification - Based on distribution of CPU & I/O burst
+
+| Name | Attribute |
+| ---- | ---- |
+| CPU-bound processes | might have a few very long burst |
+| I/O-bound processes | would typically have many very short CPU bursts |
+
+2. CPU scheduler:
+
+- CPU idle -> select 1 process from ready queue to run it <br>CPU scheduling decisions may take place when process switches from: 
+    1. running -> waiting state (I/O request)
+    2. running -> ready state (out of CPU usage time→ time interrupt)
+    3. waiting -> ready state (e.g. completion of I/O)
+    4. Or process terminates
+
+> [!NOTE]  
+> Case 1&4 ⇒ non-preemptive scheduling scheme
+>
+> Other cases ⇒ preemptive scheduling scheme
+
+- Scheduling schemes:
+
+| Non-preemptive scheduling | Preemptive scheduling |
+| ----------------------- | ----------------------- | 
+| Process keeps the CPU until it releases the CPU either by:  <br> 1. terminating <br> <br>2. switching to the waiting state <br><br> Non-preemptive scheduling **DOES NOT** require the special hardware (timer)  | Process only allowed to run in specified period. <br> At the end of the period time interrupt appear, dispatcher is invoked to decide which process goes next. <br> Protect CPU from “CPU hungry" processes. <br> Preemptive scheduling create a new problem: <br> 1. Process 1 updating data and the CPU is taken <br> 2. Process 2 executed and read data which is not completely update | 
+
+  
+3. Scheduling criteria:
+
+- CPU utilization 
+
+    - keep the CPU as busy as possible
+    - should range from 40 percent (for a lightly loaded system) to 90 percent (for a heavily used system)
+- Throughput
+    - number of processes completed per time unit
+    - Long process: 1 process/hour
+    - Short processes: 10 processes/second
+- Turnaround time
+    - Interval from the time of submission of a process to the time of completion 
+    - Can be the sum of: 
+    
+            1. periods spent waiting to get into memory
+            2. waiting in the ready queue
+            3. executing on the CPU
+            4. doing I/O
+
+- Waiting time
+    - sum of the periods spent waiting in the ready queue
+
+    - CPU-scheduling algorithm does not affect the amount of time during which a 
+process executes or does I/O;<br> it affects only the amount of time that a process 
+spends waiting in the ready queue
+
+- Response time
+    - time from the submission of a request until the first response is produced
+    - process can produce some output fairly early
+    - continue computing new results while previous results are being output to the user
+
+4. Scheduling algorithms:
+
+- First Come, First Served (FCFS):
+    - Rule: process that requests the CPU first is allocated the CPU first<br> 
+    Process owns CPU until it terminates or blocks for I/O request
+    ![first come first serve](First-come-first-serve.png)
+    - Pros and cons:
+        - Simple, easy to implement
+        - Short process must wait like long process
+
+- Shortest job first (SJF):
+
+    - Rule: associates with each process the length of the latter's next CPU burst
+        - process that has the smallest next CPU burst
+        - Two methods
+            - Non-preemptive
+            - preemptive (SRTF: Shortest Remaining Time First)
+
+    - Pros:
+        - SJF (SRTF) is optimal: Average waiting time is minimum
+    - Cons:
+        - It’s not possible to predict the length of next CPU burst
+        - Predict based on previous one (impossible)
+
+- Round robbin (RR):
+    - Rule:
+        - Each process is given a time quantum (time slice) τ to be executed
+        - When time’s up processor is preemptive, and process is placed in the last position     of ready queue
+        - If there are n process, longest waiting time is (n − 1)τ
+
+- Multilevel queue scheduling:
+    - Ready queue is divided into several separate queues
+    - Processes are permanently assigned to 1 queue
+    - Based on some properties of the process, such as memory size, priority, or type..
+    - Each queue has its own scheduling algorithm
+
+- Some consideration:
+    - Commonly implemented as fixed-priority preemptive scheduling
+        - Processes in lower priority queue only executed if higher priority queues are empty
+    - High priority process preemptive CPU from lower priority process
+    - Starvation is possible
+    - Time slice between the queues
+        - foreground process queue, 80% CPU time for RR 
+        - background process queue, 20% CPU time for FCFS
+
+![Multi-level-queue-example](Multi-level-queue.png)
+
+- A solution to the fixed-priority preemptive scheduling:
+    - Allows a process to move between queues
+ 
+    - If a process uses too much CPU time ->moved to a lower priority queue
+    - I/O-bound and interactive processes in the higher-priority queues
+    - process that waited too long in a lower- priority queue may be moved to a higher-priority queue
+    - Prevent “starvation”
+
+- Queue’s scheduler is defined by the following parameters:
+    - number of queues
+    - scheduling algorithm for each queue 
+    - method used to determine when to upgrade/demote a process to a higher/lower priority queue 
+    - method used to determine which queue a process will enter when that process needs service
+
+![Multi-level-queue](An-example-multi-level-scheduling-queue.png)
+
+5. Multi-processor scheduling:
+
+- 2 model
+    - Symmetric multiprocessor
+    - Asymmetric multiprocessor 
+ 
+
+ - Assymetric multiprocessor problem:   
+    - 1 processor execute the scheduling program
+    - Only 1 processor can access process queue
+    - May be bottleneck at 1 processor
+
+- Symmetric multiprocessor:
+    - Each processor runs its own Scheduler
+    - Independently selects available proceses in the queue
+
+- Queue management schemes in symmetric multiprocessor model:
+    1. Each processor has its own ready queue:
+        - Pros: Easy to organize
+        - Cons: Exist idle processor with empty queue while other processor has to do a lot of computation
+
+    2. Share ready queue (Global queue):
+        -  Pros:
+            - Efficient use of CPU
+            - Fair to the Process
+        - Cons:
+            - The problem of sharing data structures (queues):
+                - 1 TT is selected by 2 processors or 
+                - 1 TT is lost on the queue
+
+    3. Hybrid - combine the above schemes:
+        - Use both local and global queue
+        - Share loads from queues
+        - Each CPU works with its own local queue
+
+6. An example of priority-based in windows:
+
+![Priority levels ](priority-level-windows.png)
+
+
+### 4. Critical resources and process synchronization:
+
+1. Critical resources:
+
+- What is a critical resource?:
+    - Resource that is limited of sharing capability
+    - Required concurrently by processes
+    - Can be either physical devices or sharing data
+
+- Problem with critical resources:
+sharing critical resource may not guarantee data completeness.
+
+- Critical section:
+    - The part of the program where the shared memory is accessed is called the critical region or critical section
+    - When there are more than 1 process use critical resource then we must synchronize them a.k.a **ONLY ONE** process can stay inside the critical section at a time.
+
+2. Conditions to ensure synchronization:
+
+    1. Mutual Exclusion: Critical resource does not have to serve the number of process more than its capability at any time.
+        
+    2. Progressive: If critical resource still able to serve and there is any process want to be executed in critical section then this process can use critical resource
+
+    3. Bounded Waiting: There exists a bound on the number of times that other processes are allowed to enter their critical sections after a process has made a request to enter its critical section and before that request is granted
+
+3. Methods to tackle the critical resources problem:
+    1. Variable lock:
+        - Each process uses 1 byte in the sharing memory area as a lock
+            - enters critical section, lock (byte lock = true) 
+            - exits from critical section, unlock (byte lock= false)
+
+        - Process want to enter critical section: check other process’s lock ‘s status
+            - Locking ⇒ Wait
+            - Not lock ⇒ Has the right to enter critical section
+
+    - Pseudo code:
+    ![Varlock demonstration](Variable-lock.png)
+
+    > [!CAUTION]
+    > This method does not properly synchronize processes
+    > - Two processes request resource at the same time
+    >
+    >    1. Mutual exclusion problem (Case 1) 
+    >    2. Progressive problem (Case 2)
+    > - Reason: The following actions are done separately
+    >
+    > 1. Check the right to enter critical section
+    > 2. Set the right to enter critical section
+
+    2. Decker's algorithm:
+
+    - Similar to variable lock, but also use a 'turn' variable to show process with priority.
+
+    ![Decker's algo](decker's-algorithm.png)
+
+    > !REMARK
+    - Synchronize properly for all cases
+    - No hardware support requirement -> implement in any languages
+    - Complex when the number of processes and resources increase
+    - “busy waiting” before enter critical section
+    - When waiting, process must check the right to enter the critical section => Waste processor’s time
+
+    3. Test and set:
+    - Utilizing hardware support via uninterruptible instructions.
+    - Pseudo codes for instructions:
+        1. Test and change the content of a word
+
+                boolean TestAndSet(VAR boolean target) {
+                    boolean rv = target; 
+                    target = true; 
+                    return rv;
+                }    
+        
+        2. Swap the content of two different words
+
+                void Swap(VAR boolean , VAR boolean b) { 
+                    boolean temp = a; 
+                    a = b; 
+                    b = temp;
+                }
+                
+    - Code block is uninterruptible when executing
+    - When called at the same time, done in any order
+
+    - Remark:
+        - Simple, complexity is not increase when number of processes and critical resource increase
+        - “busy waiting” before enter critical section => Waste processor’s time
+        - No bounded waiting guarantee - The next process enters critical section is depend on the resource release time of current resource-using process
+
+    4. Semaphore:
+
+    > ![IMPORTANT]
+    > I skip the intro about semaphore and went straight to it's actual implementation (the version with block() and wakeup() operations)
+
+    -   An integer variable, initialized by resource sharing capability
+        - Number of available resources (e.g. 3 printers)
+        - Number of resource’s unit (10 empty slots in buffer)
+        - Can only be changed by 2 operation P and V     
+    - Overcome "busy waiting" problem by using block() and wakeup() operation.         
+    - Semaphore pseudo code:
+
+        typedef struct{
+            int value
+            struct process *Ptr
+
+        }Semaphore
+
+    - Operation's P pseudo code:
+            
+            wait(S){
+                S.value--
+                if(S.value<0){
+                    Insert process to S.ptr
+                    block()
+                }
+            }
+
+    - Operation's V pseudo code:
+
+            signal(S){
+                S.value++
+                if(S.value<=0){
+                    Get process P from S.ptr
+                    wakeup(P)
+                }
+            }
+    
+    - P and V are uninterruptible instructions
+
+    - Remark:
+        - Easy to apply for complex system
+        - No busy waiting 
+        - The effectiveness is depend on user
+
+
+4. Deadlocks:
+
+- A set of processes is deadlocked if each process in the set is waiting for an event that only another process in the set can cause
+
+- 4 conditions for deadlocks:
+    
+    1. Critical resource:
+        - Resource is used in a non-shareable model
+        - Only one process can use resource at a time
+        - Other process request to use resource ⇒ request must be postponed until resource is released
+
+    2. Wait before entering critical section:
+        - Process can not enter critical section has to wait in queue
+        - Still own resources while waiting
+
+    3. No resource reallocation system
+        - Resource is non-preemptive
+        - Resource is released only by currently using process after this process finished its task
+    
+    4. Circular waiting
+        - Set of processes {P0, P2, . . . , Pn} waiting in a order: P0 → R1 → P1; P1→ R2 → P2; . . . Pn−1 → Rn →Pn; Pn → R0 → P0 creating a non-stop loop.
+
+5. Methods for battling deadlock:
+
+
+
+- Deadlock prevention:
+    - Objective - Attack 1 of 4 required conditions for deadlock to appear:  
+
+    1. Critical resource:
+    - Reduce the system’s critical degree
+        - Shareable resource(read-only ffile): accessed simultaneously
+        - Non-shareable resource: Cannot be accessed simultaneously
+
+    - SPOOL mechanism(Simultaneous peripheral operation on-line) 
+        - Do not allocate resource when it’s not necessary
+        - A limited number of processes can request resource
+
+    2. Wait before entering critical section
+  
+        - Prior allocate
+            - processes request all their resources before starting execution and only run when required resources are allocated
+            -  Effectiveness of resource utilization is low
+
+        - Resource release
+            - Process releases all resource before apply(re-apply) new resource
+            - Process execution’s speed is low
+            - Must guarantee that data kept in temporary release resource won’t be lost
+
+    ![Example](deadlock-prevention-wait-before-critical.png)
+    
+    3. Non-preemptive resource
+        - Allow process to preempt resource when it’s necessary
+
+    4. Circular wait
+        - Provide a global numbering of all type of resources
+            - R = {R1, R2, . . . Rn}: Set of resources
+        - Construct an ordering function f : R → N based on the order of resource utilization
+            - f(Tape) = 1 
+            - f(Disk) = 5 
+            - f(Printer) = 12
+        - Process can only request resource in an increasing order
+        - holding resource type Rk can only request resource type Rj satisfy f(Rj)> f(Rk) 
+        - Process requests resource Rk has to release all resource Ri satisfy condition f(Ri) ≥ f(Rk)
+
+- Deadlock avoidance:
+
+    - Verify all resource request
+        - If the system is still safe after allocate resource ⇒ allocate
+        - If not ⇒ process has to wait
+    - Banker's algorithm:
+        - Data structure:
+
+        | Name | Function |
+        | ---- | ---- |
+        | Available | Vector with length m represents the number of available resource in the system. (Available[3] = 8 ) |
+        | Max | Matrix n ∗m represents each process maximums request for each type of resource. (Max[2,3] = 5 ⇒?) |
+        | Allocation | Matrix n ∗m represents each process maximums request for each type of resource. (Max[2,3] = 5 ⇒?) |
+        | Need | Matrix n ∗m represents amount of resource is needed for each process <br>(Need[2,3] = 3 ⇒?)  Need[i][j] = Max[i][j] - Allocation[i][j] |
+        | Work | vector with length m represents how much each resource still available |
+        | Finish | vector with Boolean type, length m represents if a process is guaranteed to finish or not |
+
+        - Pseudo code for banker's algorithm:
+
+                BOOL Safe(Current Resource-Allocation State){ 
+
+                    Work←Available 
+
+                    for (i : 1 → n) Finish[i]←false                    
+                    flag← true 
+
+                    While(flag){ 
+
+                        flag←false 
+
+                        for (i : 1 → n)                         
+                        if(Finish[i]=false AND Need[i] ≤Work){ 
+
+                            Finish[i]← true 
+                            Work ← Work+Allocation[i] 
+                            flag← true
+
+                        }//endif
+
+                    }//endwhile 
+                    
+                    for (i : 1 → n) if (Finish[i]=false)return false;
+                    return true;
+
+                }//End function
+        
+    - Verify flow:
+
+            1. if(Request[i]>Need[i]) => Error(Request higher than declared number)
+            
+            2. if(Request[i]>Available) => Block(Not enough resource, process has to wait)
+            
+            3. Set the new resource allocation for the system 
+                - Available = Available - Request[i] 
+                - Allocation[i] = Allocation[i] + Request[i] 
+                - Need[i] = Need[i] - Request[i]
+            
+            4. Allocate resource based on the result of new system safety check 
+            
+            if(Safe(New Resource Allocation State)) 
+                Allocate resource for Pi as requested
+            else 
+                Pi has to wait
+                Recover former state (Available, Allocation,Need)
+
+    - Example: Request[3,2] = 2: P3 requests 2 units of resource R2.
+
+- Deadlock detection and recovery:
+    - Instead of performing checking everytime a request for critical resource is performed,
+    it'll check for deadlock periodically.
+
+    - Reaction when detect deadlock:
+
+        1. Terminate all processes 
+        
+        - Quick to eliminate deadlock
+        
+        - Too expensive
+        
+        - Killed processes may be almost finished
+            
+        2. Terminate processes consequently until deadlock is removed
+           
+        - After process is terminated, check if deadlock is still exist or not
+            - Deadlock checking algorithm complexity is m ∗ n^2
+        
+        - Need to point out the order of process to be terminated
+            - Process’s priority
+            - Process’s turn around time, how long until process finish
+            - Resources that process is holding, need to finish
+
+        - Process termination’s problem 
+            - Process is updating file ⇒ File is not complete 
+            - Process is using printer ⇒ Reset printer’s status
+        
+        3. Resource preemption
+        - Need to consider:       
+            1. Victim’s selection 
+                - Which resource and which process is selected? 
+                - Preemptation ‘s order for smallest cost
+                - Amount of holding resource, usage time. . .
+
+            2. Rollback 
+                - Rollback to a safe state before and restart
+                - Require to store state of running process
+            
+            3. Starvation
+                - One process is preempted many times ⇒ infinite waiting 
+                - Solution: record the number of times that process is preempted
+
+
+
+- Deadlock ignore:
+    - Method implemented by modern operating systems.
+
+> ![NOTE]
+> TLDR: **IF I DON'T SEE ANY DEADLOCKS THAT MEANS THERE'S NO DEADLOCKS RIGHT?**
+    
+![True potential lies within ignorance](Deadlock-ignore.png)
+
+
+
