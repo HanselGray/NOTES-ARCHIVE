@@ -538,7 +538,11 @@ sharing critical resource may not guarantee data completeness.
 
     3. Bounded Waiting: There exists a bound on the number of times that other processes are allowed to enter their critical sections after a process has made a request to enter its critical section and before that request is granted
 
+ > [!IMPORTANT]
+ > I skip the intro about semaphore and went straight to it's actual implementation (the version with block() and wakeup() operations) because I think it's redudant.
+
 3. Methods to tackle the critical resources problem:
+
     1. Variable lock:
         - Each process uses 1 byte in the sharing memory area as a lock
             - enters critical section, lock (byte lock = true) 
@@ -602,10 +606,7 @@ sharing critical resource may not guarantee data completeness.
         - “busy waiting” before enter critical section => Waste processor’s time
         - No bounded waiting guarantee - The next process enters critical section is depend on the resource release time of current resource-using process
 
-    4. Semaphore:
-
-    > [!IMPORTANT]
-    > I skip the intro about semaphore and went straight to it's actual implementation (the version with block() and wakeup() operations)
+    4. Semaphore:   
 
     -   An integer variable, initialized by resource sharing capability
         - Number of available resources (e.g. 3 printers)
@@ -648,7 +649,7 @@ sharing critical resource may not guarantee data completeness.
         - The effectiveness is depend on user
 
 
-4. Deadlocks:
+5. Deadlocks:
 
 - A set of processes is deadlocked if each process in the set is waiting for an event that only another process in the set can cause
 
@@ -671,8 +672,6 @@ sharing critical resource may not guarantee data completeness.
         - Set of processes {P0, P2, . . . , Pn} waiting in a order: P0 → R1 → P1; P1→ R2 → P2; . . . Pn−1 → Rn →Pn; Pn → R0 → P0 creating a non-stop loop.
 
 5. Methods for battling deadlock:
-
-
 
 - Deadlock prevention:
     - Objective - Attack 1 of 4 required conditions for deadlock to appear:  
