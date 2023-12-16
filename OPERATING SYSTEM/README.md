@@ -604,7 +604,7 @@ sharing critical resource may not guarantee data completeness.
 
     4. Semaphore:
 
-    > ![IMPORTANT]
+    > [!IMPORTANT]
     > I skip the intro about semaphore and went straight to it's actual implementation (the version with block() and wakeup() operations)
 
     -   An integer variable, initialized by resource sharing capability
