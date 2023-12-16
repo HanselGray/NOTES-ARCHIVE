@@ -828,7 +828,7 @@ sharing critical resource may not guarantee data completeness.
 - Deadlock ignore:
     - Method implemented by modern operating systems.
 
-> ![NOTE]
+> [!NOTE]
 > TLDR: **IF I DON'T SEE ANY DEADLOCKS THAT MEANS THERE'S NO DEADLOCKS RIGHT?**
     
 ![True potential lies within ignorance](Deadlock-ignore.png)
