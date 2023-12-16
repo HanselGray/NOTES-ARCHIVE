@@ -555,7 +555,7 @@ sharing critical resource may not guarantee data completeness.
     - Pseudo code:
     ![Varlock demonstration](Variable-lock.png)
 
-    > [!CAUTION]
+    > REMARK
     > This method does not properly synchronize processes
     > - Two processes request resource at the same time
     >
@@ -573,11 +573,11 @@ sharing critical resource may not guarantee data completeness.
     ![Decker's algo](decker's-algorithm.png)
 
     > !REMARK
-    - Synchronize properly for all cases
-    - No hardware support requirement -> implement in any languages
-    - Complex when the number of processes and resources increase
-    - “busy waiting” before enter critical section
-    - When waiting, process must check the right to enter the critical section => Waste processor’s time
+    > - Synchronize properly for all cases
+    > - No hardware support requirement -> implement in any languages
+    > - Complex when the number of processes and resources increase
+    > - “busy waiting” before enter critical section
+    > - When waiting, process must check the right to enter the critical section => Waste processor’s time
 
     3. Test and set:
     - Utilizing hardware support via uninterruptible instructions.
