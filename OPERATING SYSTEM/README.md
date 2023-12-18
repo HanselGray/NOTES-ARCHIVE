@@ -26,7 +26,7 @@
 
 ![Structure of a PCB](process_control_block.png)
 
-> [!NOTE]
+> ![NOTE]
 > | Single-threaded process | Multi-threaded process |
 > | ---- | ---- |
 > | A running process with only one thread | Have multiple threads that can run simultaneously |
@@ -835,3 +835,435 @@ sharing critical resource may not guarantee data completeness.
 
 
 
+# CHAPTER 3 - MEMORY MANAGEMENT
+
+## 1. INTRODUCTION
+
+### 1.1 Example
+
+![C-compiling-proc-overview](C-compiling-process.png)
+
+| Step | Name | Purpose |
+| ---- | ---- | ---- |
+| 1 | Preprocessing | Remove comments, include header files in source code and replace macro name with code |
+| 2 | Compiling | Convert source code into instructions |
+| 3 | Assembling | Convert asm code into object code |
+| 4 | Linking | Combine libraries and object code to create an executeable |
+
+![C-compiling-proc-1](C-compiling-1.png)
+![C-compiling-proc-2](C-compiling-2.png)
+![C-compiling-proc-3](C-compiling-3.png)
+![C-compiling-proc-4](C-compiling-4.png)
+
+### 1.2. Memory and program
+1. Memory leveling:
+    - Memory is an important system’s resource
+        - Program must be kept inside memory to run
+    - Memory is characterized by size and access speed
+    - Memory leveling by access speed
+
+![Memory-leveling](Memory-leveling.png)
+
+2. Main memory:
+- Used for running program and data
+- Array of memory block with size of bytes, words
+- Each memory block has an address
+    - Physical address
+
+![Main-memory](Main-memory.png)
+
+3. Program:
+
+- Store on external storage devices
+
+- Executable binary files
+    - File’s parameters
+    - Machine instruction (binary code), 
+    - Data area (global variable), . . 
+
+- Must be brought into internal memory and put inside a process to be  executed (process executes program) 
+
+- Input queue 
+    - Set of processes kept in external memory (normally: disk) 
+    - Wait to be brought into internal memory and execute
+
+- Program execution sequence:
+    1. Load the program into main memory
+        - Read and analysis executable file (e.g. *.com, file *.exe) 
+        - Ask for a memory area to load program from disk
+        - Set values for parameters, registers to a proper value
+  
+    2. Execute the program
+        - CPU reads instructions in memory at location determined by program counter 
+            - 2 registers CS:IP for Intel’s family processor (e.g. : 80x86)
+        - CPU decode the instruction
+            - May read more operand from memory
+        - Execute the instruction with operand
+        - If necessary, store the results into memory at a defined location
+   
+    3. Finish executing
+        - Free the memory area that allocated to program
+
+> ![WARNING]
+> - Program may be loaded into any location in the memory
+> - When program is executed, a sequence of addresses are generated
+>
+> => How to access memory?
+
+### 1.3. Access binding
+
+1. Types of address:
+
+| Name | Definition |
+| ---- | ---- |
+| Symbolic | Name of object in the source program |
+|  Relative address | Generated from symbolic address by compiler <br> Relative position of an object from the module’s first position |
+| Absolute address | Generate from relative address when program is loaded into memory <br> For IBM PC: relative address <Seg :Ofs>→ Seg * 16+Ofs <br> Object’s address in physical memory – physical address<br> Example: JMP 010Ah ⇒ jump to the memory block at 010Ah at the same code segment (CS) |
+
+![Physical-logical-address](Physical-logical-address.png)
+
+### 1.4 Program structure:
+
+1. Linear:
+
+![Linear structure](Linear-structure.png)
+
+- After linking, modules are merged into a complete program
+    - Contain sufficient information to be able to execute
+    - External pointers are replaced by defined values  
+    - To execute, required only one time to fetch into the memory   
+
+**REMARKS**
+- Advantages
+    - Simple, easy to link and localizing the program
+    - Fast to execute
+    - Highly movable
+- Disadvantages
+    - Waste of memory
+    - Not all parts of the program are necessary for the program’s execution
+    - It’s not possible to run the program that larger than physical memory’s size
+
+
+2. Dynamic loading:
+
+![Dynamic-loading](Dynamic-loading.png)
+
+- Each module is edited separately
+- When executing, system will load and localize the main module
+- When module is needed, request for memory and load module into memory
+- When a module is finished using or not enough memory, bring unnecessary modules out
+
+**REMARKS**
+- Advantage
+    - Can use memory are smaller than the program’s size
+    - High memory usage effectiveness if program is managed well
+
+- Disadvantage
+    - Slow when execution
+    - Mistake may cause waste of memory and increase execution time
+    - Require user to load and remove modules
+    - User must understand clearly about the system
+    - Reduce the program’s flexible
+
+3. Dynamically-linked:
+
+- Links will be postponed when program is executing
+- Part of the code segment (stub) is utilized to search for corresponding function in the library in the memory
+- When found, stub will be replace by the address of the function and function will be executed
+- Useful for constructing library
+
+4. Overlay:
+
+- Modules are divided into different levels
+    - Level 0 contains main modul, load and localize the program
+    - Level 1 contains modules called from level 0’s module and these modules do not exist at the same time and so on ...
+- Memory is also divided into levels corresponding to program’s levels
+    - Size equal to the same level’s largest module’s size
+- Overlay structure requires extra information
+    - Program is divided into how many levels, which modules are in each levels
+    - Information is stored in a file (overlay map)
+
+- Module at level 0 is edited into an independent executable file
+
+- During the initial stage of execution
+    - Load level 0 module similar to a linear structure program
+    - When another module is needed, load that module into corresponding memory’s level
+    - If there are module in the same level exist, bring that module out
+
+**REMARKS**
+- Overlay structure allows program with larger size than memory area size allocated by the operating system, ***however***:
+    - Require extra information from user
+    - Effectiveness is depend on provided information
+    - Memory usage effectiveness is depend on how program’s modules are organized
+    - If there are exist modules that larger than other modules in the same level ⇒ the effective is reduced
+    - Module loading process is dynamic but program’s structure is static ⇒ not change at each time running
+    - When provided with more memory, the effectiveness does not increase
+
+**FLOW OF A OVERLAY PROGRAM**
+
+## 2. Memory management strategies
+
+### 2.1 Fixed partition:
+
+- Memory is divided inton parts
+
+    - Each part is called a partition
+
+    - Partitions size can be unequal
+        - Utilized as and independent memory area
+        - At a single time, only one program is allowed to exist
+
+- Programs lie inside memory until finish
+
+![Fixed-partition](Fixed-partition.png)
+
+**REMARKS**
+- Simple, easy for memory protection
+    - Program and memory area have a protection lock
+    - Compare 2 locks when program is loaded
+
+- Reduce searching time
+
+- Must copy controlling module into many versions and save at many places
+
+- Number of parallel programs cannot be more than n
+
+- Memory is segmented
+    
+        When there exists a program whose size is larger than the largest partition's size then:        
+            - Total free memory is large enough but can not load any program
+
+        ⇒Fix partition structure, merge neighboring partition
+
+- Application
+    - Large size disk management
+    - IBM OS/360 operating system
+
+
+### 2.2 Dynamic partition strategy
+
+1. Rule:
+
+**Only one management list for free memory**
+- At the start, the whole memory is free for processes ⇒ largest hole
+- When a process requests for memory
+
+        Search in the list for a large enough hole for request
+
+        If found
+            Hole is divided into 2 parts
+            One part allocate to process as requested
+            One part return to the management list
+
+        If not found
+            Wait until there is a hole large enough
+            Allow another process in the queue to execution (if the priority is guaranteed)
+
+- When the process finish
+
+        - Allocated memory area is returned to the free memory management list
+        - Combine with other neighboring holes if necessary
+
+2. Free memory area selection strategy:
+
+| Name | Description |
+| ---- | ---- |
+| First Fit | First free area satisfy request |
+| Best Fit | Most fitted area |
+| Worst Fit | Largest area that satisfy request |
+
+3. Memory reallocation problem:
+- After a long working time, the free holes are distributed and caused 
+memory lacking phenomenon ⇒ Need to rearrange memory
+
+- Some solutions:
+    
+    1. Move process
+    
+            - Problem: 
+                1. Internal objects when move to new place will has new address    
+                    - Use relocation register to store process’s relocation value
+                2. Select method for lowest cost 
+                - Move all process to one side ⇒ largest free holes
+                - Move processes to create a sufficient free hole immediately
+    
+    2. Swapping process
+    
+            - Problem: 
+                1. How to select a right time to suspend process
+                2. Bring process and corresponding state to external memory
+                    - Free allocated memory area and combine with neighboring areas
+                3. Reallocation to former place and restore state
+                    - Use relocation register if process is moved to different places
+
+**REMARKS**
+
+- No need to copy the controlling modules to different places
+
+- Increase/decrease parallel factor depend on the number and size of programs
+
+- Cannot run program with size larger than the physical memory size
+
+- Cause memory waste phenomenon
+    - Memory area is not used and not in the memory management list
+        - Cause by the operating system error
+        - By malicious software
+
+- Cause external memory defragment phenomenon
+    - Free memory area is managed but distributed -> cannot used
+
+- Cause internal memory defragment phenomenon
+    - Memory allocated to process but not used by process
+
+### 2.3 Segmentation strategy
+
+1. Rule
+- Program is a combination of modul/segment:
+    - Segment number, segment’s length
+    - Each segment can be edited independently.
+    - Compile and edit program -> create SCB (Segement Control Block) 
+
+- Each member of SCB is corresponding to a program’s segment
+    - Mark(0/1) : Corresponding segment is already inside memory
+    - Address: Segment’s base location in memory
+    - Length: Segment’s length
+- Accessing address: segment’s name (number) and offset
+
+2. Example: 
+
+![Example](segmentation.png)
+
+- Here Address<2,120> means accesss section 2 at offset 120 = 2920 in terms of physical address
+
+3. Problem: address conversion
+
+![address-conversion](Address-conversion-segmentation.png)
+
+**REMARKS**
+
+- Pros:
+    - Module loading diagram does not require user ‘s participation
+    - Easy to protect segments
+
+            1. Check memory accessing error
+                - Invalid address : more than segment’s length
+            2. Check accessing’s property
+                - Code segment: read only -> Write into code segment: accessing error
+            3. Check the right to access module
+                - Add accessing right (user/system) into SCB 
+
+    - Allow segment sharing (Example: Text editor)
+
+- Cons:
+- Effectiveness is depended on the program’s structure
+
+- Memory is fragmented because:
+    - Memory allocated by methods first fit /best fit... 
+    - Hence, require memory rearrangement (relocation, swapping), which is: 
+        
+            - Easier with the help of SCB 
+                - M ← 0 : Segment is not in memory
+                - Memory’s area defined by A and L is returned to the free memory management list
+    - Selecting which module to bring out is a problem
+        
+            1. Longest existed module
+        
+            2. Last recently used module
+        
+            3. Least frequently used module ⇒ Require media to record number and time that module is accessed
+
+- Solution: allocate memory for equal size segment (page)?
+
+### 2.4 Paging:
+
+1. Rule:
+
+- Physical memory is divided into equal size blocks: page frames
+- Physical frame is addressed by number 0, 1, 2, . . . : frame’s physical address
+- Frame is the unit for memory allocation
+- Program is divided into blocks that have equal size with frame
+(pages)
+-  When program is executed
+
+        1. Load logical page (from external memory) into page‘s frame
+
+        2. Construct a PCB( Page Control Block) to determine the relation between physical frame and logical page
+
+        3. Each element of PCB is corresponding to a program’s page 
+
+            - Show which frame is holding corresponding page
+
+            - Example PCB[8] = 4 ⇒ ?
+
+        4. Accessing Address is combined of
+
+            - Page’s number (p) : Index in PCB to find page’s base address
+
+            - Displacement in page (d): Combined with base address to find the physical address
+
+![Paging-example](Paging-example.png)
+
+**NOTES** 
+
+- Frame size is always power of 2 
+    - Allow connection between frame number and displacement
+    - Example: memory is addressed by n bit, frame’s size 2^k frame displacement
+
+- Not necessary to load all page into memory
+    
+    - Number of frame is limited by memory’s size, number of page can be unlimited
+    
+    - PCB need Mark filed to know if page is already loaded into memory
+        - M = 0 Page is not loaded
+        - M = 1 Page is loaded
+
+- Distinguish between paging and segmentation
+    - Segmentation
+        - Module is depend on program’s structure
+    - Paging
+         Block’s size is independent from program
+        - Block size is depend on the hardware (e.g.: 2^9 → 2^13 bytes)
+
+**REMARKS**
+
+- Number of frame allocated to program 
+    - Large => Faster execution speed but parallel factor decrease
+    - small => High parallel factor but execution speed slow because page is not inside memory
+⇒ Effectiveness is depend on the page loading or page replacing strategy
+
+- Page loading strategy
+
+        1. Load all page: Load all program
+
+        2. Prior loading: predict next page will be used
+
+        3. Load on demand: Only load page when it’s necessary
+
+- Page replacing strategy
+    
+        1. FIFO First In First Out 
+    
+        2. LRU Least Recently Used 
+    
+        3. LFU Least Frequently Used 
+
+        ...
+
+- Pros:
+
+1. Increase memory access speed
+    - Access memory 2 times (PCB and required address) 
+    - Perform connecting instead of adding operation
+
+2. No external fragmentation phenomenon
+
+3. High parallel factor
+    - Only need several program’s page inside memory
+    - Program can have any size
+
+4. Easy to perform memory protection
+    - Legally access address (not more than page size) 
+    - Access property (read/write) 
+    - Access right (user/system)
+
+5. Allow sharing page between processes
