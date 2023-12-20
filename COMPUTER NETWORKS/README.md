@@ -568,8 +568,139 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 	- network mask (indicating network versus host portion of address)
 
 
+# CHAPTER 7 - ROUTING
 
+### 1. What is routing:
+
+1. Basics:
+
+- Router :
+	- Is a computer with particular hardware
+	- Connects multiple networks together, has multiple network interfaces
+	- Forward packets according to routing table
+
+- **TLDR**: Router is the device that forwards data between networks
+
+
+-  Routing is a mechanism so that a host or a router decides how to forward a packet from source to destination.
+- Result of the routing is a routing table
+
+- What to consider in routing
+	1. Building routing table 
+	2. Information need to calculating route
+	3. Routing algorithm and protocol.
 			       
+![Routing](Routing-principle.png)
+
+- Routing principle:
+	
+		When a host send an IP packet to another host:
+	
+		1. If the destination and the source are in the same physical medium: Transfer directly
+		
+		2. If the destination is in a different network with the source: Send through some other routers (need to choose route)
+
+- Routing table:
+
+	- Lists of possible routes, saved in the memory of router
+
+	- Main components of routing table:
+		- Destination network address/network mask
+		- Next router address
+
+![Routing-table-example](routing-table-example.png)
+
+2. Longest matching rule and default route:
+
+- Suppose you have a destination address of 11.1.2.5, which route should you take according to the following routing table:
+
+![Longest-matching-1](Longest-matching-1.png)
+
+![Longest-matching-2](Longest-matching-2.png)
+
+- According to the binary representation of the ip addresses, the route we should choose here is 11.1.2.0/24
+- Explain - What counts as a longest match?
+
+		- An address is the longest match if it satisfies the following conditions:
+		1. In binary representation, all bits of the network address of the route and the destination must match under that particular mask.
+		Example:
+			11.1.2.5 = 	  00001011.		00000001.		00000010.		00000101 
+		matches with
+			11.1.2.0/24 = 00001011.		00000001.		00000010.		00000000
+
+		but does not matches with
+			11.1.3.0/24 = 00001011.		00000001.		00000011.		00000000 
+			because the 24th bit is different
+
+		however it still matches with
+			11.1.3.0/23 = 00001011.		00000001.		00000011.		00000000 
+			
+			because all bits of the network address aka 1-23rd bits are the same
+		
+		2. The length of the network mask in case there is a match must be the longest
+
+- Default route:
+	- If router does not find a route to a destination in its routing table, default route is necessary
+	
+	- Default route is defined for all destination networks that are not figured in the routing table.
+
+	- 0.0.0.0/0 is the address of the default route
+		- Is a special notation for all destination networks
+
+3. Route aggregation:
+
+- There are many networks on the Internet, hence if we try to store route for each network
+	- There will be a lot of entries in the routing table?
+
+- **Solution**: the entries to sub-networks of the same “big” network can be aggregated<br> in order to reduce the size of routing table.
+
+> ![NOTE]
+> Default route is a type of route aggregation
+
+![route-aggregation](route-aggregation.png)
+
+- Example:
+	- In this case, if someone wants to send to 200.23.1.0/24, they only need to have the route to <br> 200.23.0.0/22 in their table.
+
+4. Exercise and solutions:
+
+![Routing-excercise-1](Routing-excercise-1.png)
+
+![Routing-excercise-2](Routing-excercise-2.png)
+
+![Routing-excercise-3](Routing-excercise-3.png)
+
+![Routing-excercise-4](Routing-excercise-4.png)
+
+> ![IMPORTANT]
+> FOR QUESTION 2, there can be multiple answers that matches the criteria
+
+### 2. Static and dynamic routing:
+
+1. Why the need of update routing table?
+	- Network structure may change overtime
+		1. New network is added.
+		2. Router failure due to power corruption …
+
+	- Hence, it’s necessary to update routing table 
+		1. in theory: all nodes
+		2. in pratice: some node
+
+2. How to?
+
+| Name | Description | Pros | Cons | 
+| ---- | ---- | ----| ---- | 
+| Static routing | Entries in routing table are added manually by administrator |Stable & Secure | Very...static, of course<br> Back up link cannot be used <br> Difficult to manage |
+| Dynamic routing | Automatically update routing table by mean of routing protocols | Easy to manage & Backup link can be utilized | Insecure <br> Difficult to understand the routing protocols
 
 
+### 3. Routing algorithms and protocols:
 
+1. Routing protocol:
+- Goal: determine “good” paths (equivalently, routes), from sending hosts to receiving host, through network of routers
+
+- Path: sequence of routers packets traverse from given initial source host to final destination host
+	- “good”: least “cost”, “fastest”, “least congested”
+
+> ![TIP]
+> Routing is a “**TOP-10”** networking challenge
