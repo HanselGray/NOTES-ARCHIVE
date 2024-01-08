@@ -704,3 +704,197 @@ LAN topology: Bus, Star, Ring, wireless LAN (WLAN).
 
 > ![TIP]
 > Routing is a “**TOP-10”** networking challenge
+
+2. Routing algorithms:
+
+- Classification:
+
+![routing-algos-classification](Routing-algorithms-classification.png)
+
+- Dijkstra's link-state routing-algorithm:
+	
+	- It is the Dijkstra's algorithm for finding the shortest path from 1 node to others in a graph with no edges having sub-zero weight.
+	
+	- Properties:
+		1. Centralized: network topology, link costs known to all nodes
+
+				• accomplished via “link state broadcast” 
+				• all nodes have same info
+		2. Computes least cost paths from one node (“source”) to all other nodes
+
+				• gives forwarding table for that node
+
+		3. Iterative: after k iterations, know least cost path to k destinations
+	
+	- **Notations**:
+		- Algorithm complexity:
+			
+				1. each of n iteration: need to check all nodes, w, not in N
+				2. n(n+1)/2 comparisons: O(n^2) complexity
+				3. more efficient implementations possible: O(nlogn)
+
+		- Message complexity:
+
+				1. each router must broadcast its link state information to other n routers 
+				2. efficient (and interesting!) broadcast algorithms: O(n) link crossings to disseminate a broadcast message from one source
+				3. each router’s message crosses O(n) links: overall message complexity: O(n^2)
+
+- Distance vector algorithm:
+	- Based on Bellman-Ford (BF) equation (dynamic programming)
+
+![Equation](Bellman-Ford-equation.png)
+
+
+### 3. Hierarchical routing:
+
+1. Motivation:
+	
+	1. The Internet structure isn't "flat", as in not all routers are identical in terms of capability, administrative priveleges, etc...
+
+	2. The scale of the Internet is absolutely massive with billions of destination, means that:
+		- can’t store all destinations in routing tables!
+		- routing table exchange would swamp links
+
+	3. On the topic of administrative autonomy, since the Internet is a network of networks, each network admin may want to control routing in its own network
+
+2. Approach:
+	- Aggregate routers into regions known as “autonomous systems” (AS) (a.k.a. "domains”)
+
+- 2 types of domain routing:
+
+| Name | Function | Properties |
+| - | - | - |
+| Intra AS (domain) | routing among within same AS (“network”) | - All routers in AS must run same intra-domain protocol <br> - Routers in different AS can run different intra-domain routing protocols <br> - Gateway routers: at “edge” of its own AS, has link(s) to router(s) in other AS’es |
+| inter-AS (domain) | routing among AS’es | Gateways perform inter-domain routing (as well as intra-domain routing) <br> - There is only one interdomain routing protocol : BGP - will be discussed later |
+
+> ![TIP]
+> Here's an example of the hierarchy of the Internet:
+
+![internet-hierarchy-example](internet-hierarchy.png)
+
+3. Autonomous system (AS):
+
+- A set of routers with the same routing policy (routing protocol, metric…) is aggregated into an AS
+- Gateway: router connect between two ASes
+- Each AS has an unique number (ASN - 16 bits or 32 bits).
+
+![AS-examples](autonomous-systems-example.png)
+
+- Inter/intra domain routing:
+	- Some protocols for intra-domain routing (a.k.a IGP or Interior Gateway Protocol):
+		- RIP: Routing Information Protocol 
+		- OSPF: Open Shortest Path First
+		- IS-IS, IGRP, EIGRP (Cisco)… 
+	
+	- For inter-domain routing (a.k.a EGP or Exterior Gateway Protocol), there is only **ONE** option:
+		-	BGP (v4): Border Gateway Protocol
+
+> ![TIP]
+> Here's an example of intra/inter domain routing of the Internet:
+
+![Inter-intra-routing](Inter-intra-domain-routing.png)
+
+- Forwarding table configured by intra- and inter-AS routing algorithms follows the below principle: 
+
+	1. For destinations within AS: intra-AS routing determine entries 
+
+	2. For external destinations: inter-AS & intra-AS determine entries 
+
+- Inter-AS routing: a role in intra-domain forwarding:
+	- **Question**: suppose a router in AS1 receives datagram destined outside of AS1, how does it know which gateway router of AS1 should the packet be forwarded to? 
+	- Hence, AS1 inter-domain routing must:
+
+			1. Learn which destinations reachable through AS2 or AS3 (in example)
+			2. Propagate this reachability info to all routers in AS1
+
+![Inter-AS-routing-role-in-intra-domain-routing-Example](Inter-AS-routing-role-in-intra-domain-routing.png)
+
+- Intra-AS routing:
+	1. RIP: Routing Information Protocol [RFC 1723] 
+		- classic DV: DVs exchanged every 30 secs
+		- no longer widely used
+	2. OSPF: Open Shortest Path First [RFC 2328] 
+		- link-state routing
+	3. IS-IS protocol (ISO standard, not RFC standard) essentially same as OSPF
+	4. EIGRP: Enhanced Interior Gateway Routing Protocol 
+		- DV based
+		- formerly Cisco-proprietary for decades (became open in 2013 [RFC 7868])
+
+
+### 4. Intra-domain routing protocol
+
+1. RIP (Routing Information Protocol):
+
+- IGP
+- RIP v.1, currently use RIP v.2
+- Distance-vector algorithm
+- Routing metric: # of hops (max = 15 hops)
+
+- How RIP exchange information:
+	- Routing table of router is exchanged
+	
+	- Periodic
+		- Node advertise its distance-vector with neighbors every 30s
+		- Each message contains up to 25 routing table entries
+		- In practice, multiple messages are sent
+	- Trigger
+		- When every entry changes, send copy of entry to neighbors
+		- Neighbors use to update their tables
+
+- RIP timers:
+	1. Update timer
+		- Exchange routing table every 30 sec
+	2. Invalid timer
+		- Updated every time router receives information
+		- If it is time out (180sec), it becomes hold down status
+	3. Hold down timer
+		- Router keeps routing information for 180 sec
+		- Not refer the worse update (to avoid the loop)
+		- Possibly down status
+	4. Flush timer
+		- Update every time router receives information
+		- If 240sec passed, routing entry will be deleted
+
+![RIP-timers-graph](RIP-timers-graph.png)
+
+- Ping-pong failure in RIP:
+
+![Ping-pong problem](Ping-pong%20problem.png)
+
+- To tackle ping-pong failure:
+	1. Limit the maximum hop count, e.g: 16
+	2. Split horizon
+		- The routing info will not return back to the sender
+	3. Poison reverse
+		- When network is down, send update with metric 16
+		- That routing information become Hold-down status
+
+2. OSPF (Open Shortest Path First):
+
+- IGP
+
+- “open”: publicly available - standard by IETF (current version, version 3, defined in RFC 2740)
+
+- Classic link-state 
+	- each router floods OSPF link-state advertisements (directly over IP rather than using TCP/UDP) to all other routers in entire AS
+	- multiple link costs metrics possible: bandwidth, delay
+	- each router has full topology, uses Dijkstra’s algorithm to compute forwarding table (Shortest Path First)
+
+- Advanced features
+	- security: all OSPF messages authenticated (to prevent malicious intrusion) 
+	- Large AS: Hierarchical OSPF
+	- Classless routing (able to use Variable-Length Subnet Masking -VLSM )
+	- Different metric for each link based on TOS (is not used in practice)
+
+- Hierarchical OSPF:
+	- Why we have to divide the network into small area?
+	- If we have more than 100 routers….
+		- Link state update is delivered all the time
+		- Number of re-calculation increase
+		- Need more memory, need more CPU power
+		- Number of link state update become large
+		- Routing table become large
+	- Area
+		- Group of routers which share the same LSA
+
+![Hierarchical-OSPF](Hierarchical-OSPF.png)
