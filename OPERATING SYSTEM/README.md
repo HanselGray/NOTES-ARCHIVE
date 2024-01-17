@@ -998,8 +998,6 @@ sharing critical resource may not guarantee data completeness.
     - Module loading process is dynamic but program’s structure is static ⇒ not change at each time running
     - When provided with more memory, the effectiveness does not increase
 
-**FLOW OF A OVERLAY PROGRAM**
-
 ## 2. Memory management strategies
 
 ### 2.1 Fixed partition:
@@ -1266,3 +1264,344 @@ memory lacking phenomenon ⇒ Need to rearrange memory
     - Access right (user/system)
 
 5. Allow sharing page between processes
+
+
+# CHAPTER 4 - FILE SYSTEM MANAGEMENT
+
+## 1. File system
+
+### 1.1. File notion
+
+1. File attributes:
+
+    | Name | Properties |
+    | - | - |
+    | Filename | A sequence of character that identify a file |
+    | Type (extension) |  defines a file type, and what action should OS do when file is open |
+    | Position | points to device and location of a file |
+    | Size |  Current/maximum size of file |
+    | Protection (Acess control/Permission) |  : who can read/write... |
+    | Time | Creation time, modified time, last used time .. |
+
+2. File’s record:
+    - Stores a file attribute.
+    - May contain only file’s name and file’s identifier; file’s identifier define other information
+    - Size from several bytes to kilobytes
+
+3. File’s directory:
+    - Stores file records.
+    - Size may be up to Megabytes 
+    - Often stored on external memory
+    - Directory parts are loaded into memory when necessary
+
+### 1.2 Directory structure
+
+
+1. Partition:
+    - Disk is divided into Partitions, Minidisks, Volumes.
+    - Each partition is processed as an independent storage area.
+    - Different physical storage devices can also be merged into 1 partition.
+
+2. Operations with directory:
+    | Name | Properties |
+    | - | - |
+    | Seek file | Search for an item corresponding to a file name
+    | Create file | Create new file require to create new item in directory
+    | Delete file | When delete a file, remove corresponding item in the directory
+    | Listing file|  Show the list of files and corresponding item in directory
+    | Rename file | Rename file, position in the directory’s structure
+    | Traverse the file system | Access all directory and content of all files in the directory (backup data to tape)
+
+3. One-level directory:
+
+    - Simplest structure, files are stored in the same directory
+    - => If number of user and file is large, it’s possible for the filename to be duplicated
+    - Solution: Each user would have their own directory and can only work with private folder
+
+    ![one-level-directory](one-level-directory.png)
+
+    - When a user is added
+        1. System create a new member in Master file directory 
+        2. Create User file directory
+    
+    - **BUT**, what if uses want to share files with each other?
+
+4. Tree structure directory:
+    - A (relative/absolute) path to file exist in this model
+    - A sub-directory is a file that is treated specially (bit for marking) 
+    - Operations create/delete/add... are performed on current directory
+    - Delete a sub-directory ⇒ delete its sub-tree
+
+    ![tree-structure-directory](tree-structure-directory.png)
+
+
+
+## 2. File system implementation
+
+### 2.1 Directory implementation
+
+1. Linear list with pointer to data blocks:
+    - Simple for programming
+    - Time consuming when operate with directories, because each lookup means traversing the entire list
+
+    ![linear-list](linear-list.png)
+
+2. Hash-table:
+    - Reduce directory traverse time. 
+    - However, it requires an effective hash function to avoid collision.
+    - Fixed table size problem: Increase size has to recalculate existed numbers.
+
+    ![hash-table](hash-table.png)
+
+
+### 2.2. Storage area allocation methods
+
+1. Objective:
+    - Increase performance of sequence access
+    - Easy to randomly access file
+    - Easy to manage file
+
+2. Continuous Allocation:
+    - Rule: File is allocated with continuous memory block
+    - Implement First-Fit /Worst Fit /Best Fit strategies to select empty space when there are request. 
+    - However, this method creates External fragmentation phenomenon and causes difficulty when file size increases.
+
+    ![continuous-alloc](continuous-alloc.png)
+
+3. Linked-list allocation:
+    - Rule: File is allocated with non continuous memory blocks. End of each block is a pointer, point to next block.
+    
+
+    ![Linked-list-alloc](Linked-list-alloc.png)
+
+    - **NOTATIONS**:
+        - To access block n, must traverse n − 1 blocks before it => slow speed.
+        - If a pointer is corrupted, then data is lost cause there's no link.
+
+    - **SOLUTION**:
+        1. Apply many pointer in each block, but this is memory costly.
+        2. Apply FAT (File allocation table), which has the following properties:
+
+                1. Utilized as a linked list
+                2. Combined of many members, each member corresponding to a block
+                3. Each member in FAT, contain next block of file
+                4. Last block has special value (FFFF) 
+                5. Error block has value (FFF7) 
+                6. Unused block has value (0) 
+                7. Location field in file record contains the first block of file
+
+4. Index allocation:
+    - Rule: Each file has a main index block which contains list of file block
+    - Create file, members of index block has null value (-1)
+    - Require block i, whose block address is allocated, putted into member i
+
+
+    ![index-alloc](index-alloc-1.png)
+
+    ![index-alloc](index-alloc-2.png)
+
+    - **NOTATIONS**:
+        - No external fragmentation
+        - Allow direct access
+        - However, when storing multiple files of small size, cause memory waste (e.g: file data size = 1 block, still need 1 more block to store index table)
+        - Solution: 
+            1. Reduce block size 
+                - Reduce cost of memory ⇒ file’s size storing problem.
+            2. Linked map
+                - Connects index block
+                - Last member of index block point to other index block if it’s necessary
+            3. Multi level Index
+                - Use an index block point to other index block
+
+5. Link map (UNIX):
+    - 12 direct block point to data block 
+    - Single indirect block contains address of direct block 
+    - Double indirect block contains address of Single indirect block 
+    - Triple indirect block contain address of Double indirect
+
+    ![Link-map](Link-map-UNIX.png)
+
+### 2.3. Free storage area management
+
+1. Bit vector:
+    - Each block represented by 1 bit (1: free; 0: allocated) 
+    - Easy to find n contiguous memory block
+    - Need instruction to work with bit
+
+2. Link list 
+    - Hold pointer to first free disk block
+    - This memory block contain pointer to next free disk block
+    - Not effective when traversing the list
+
+3. Grouping 
+    - Hold address of n free block in the first free block
+    - n − 1 first free block, block n contain address of next n free block
+    - Pros: Fast to find free memory area
+
+4. Counting 
+    - Due to memory block continuously allocated and free concurrently
+    - Rule: Store address of the first free block and size of contiguous memory area in free-memory-area management list
+    - Effective when the counter larger than 1
+
+## 3. Information organization on disk
+
+### 3.1 Disk’s physical structure
+
+1. Floppy-disk:
+
+    ![floppy-disk-physical-structure](floppy-disk-physical-structure.png)
+
+    ![floppy-disk-physical-structure](floppy-disk-physical-structure2.png)
+
+2. Hard-disk:
+
+    ![hard-disk](hard-disk.png)
+
+    - Sector: information unit to work with disks
+    - Sector address is determined by <H,C,S> (Header, Cylinder, Sector)
+    - How to interact with a sector:
+        1. Each sector can be accessed (read/write/format/...) to via BIOS 13h interrupt (function 2, 3, 5,...) 
+        2. Operating system’s interrupt, Example: MSDOS provide 25h/26h interrupt allow read/write sectors at linear address
+        3. Use WIN32 API functions: CreateFile()/ReadFile()/WriteFile()...
+
+### 3.2. Disk logical structure:
+
+- For floppy disks: Each OS has their own management strategy
+- For hard disks (mass storage): 
+    - Partitions are divided into sections (Partitions, Volumes,..) 
+        - Each section is a set of contiguous Cylinders
+        - User can set the size (Example: use fdisk command)
+        - Each partition can be manage by an independent OS
+    - OS format partition in an usable format
+        - Different format systems exist: FAT, NTFS, EXT3,...
+    - In front of partitions are masked sector
+        - Master Boot Record (MBR): Disk’s first Sector
+
+1. Master boot record:
+
+    -  Disk’s most important and first sector (Number 0 or address <0, 0, 1>) 
+    - Structure consist of 3 parts:
+
+    | Name | Properties |
+    | - | - |
+    | Bootstrap code | A piece of firmware, which reads partition table and extracts partitions info |
+    | Partition table (64bytes) | Consist of 4 elements, each element 16 bytes. Element contains information of one partition: Position, size, owned system
+    | OS’s signature | always 55AA | 
+
+    - Partition table structure:
+
+    ![partition-table](partition-table.png)
+
+    - Partition table examples:
+
+    ![partition-table](partition-table-examples.png)
+
+    - Result explained:
+
+        - Each row is a record of a partition, stored in the above format. <br>**NOTE**: *SHIT IS WRITTEN IN LITTLE ENDIAN*
+        - Let's look at row 2 <br> Value: 00 00 81 EB  0F FE FF FF  2B 1D B7 00  72 13 7A 00 
+
+            1. First byte has value of 00 (hex) -> Boot = No
+
+            2. 2nd byte has value of 00 -> Hdr (first header number) = 0 
+
+            3. The partition first sector and cylinder number value is EB 81, when translated to binary have the value <br> 1110 1011 1000 0001. <br> When take the 8th and 9th bit ('10' in this case) and put it to the front we get the first cylinder of the partion '10 1110 1011' (bin) = 747 (dec). The rest ('00 0001'(bin) = 1 (dec) ) is the first sector number.
+
+            4. Recognition code here is 0F (hex) -> extended Partition.
+
+            5. Last header number is FE (hex) -> HdR = 254
+
+            6. Last sector and cylinder's number 'FF FF' -> last cylinder's number = 1023 (dec); last sector's number = 63 (same logic as the first sector and cylinder number part)
+
+            7. Start address is '00 B7 1D 2B' (hex) = 12 000 555 (dec) 
+
+            8. Number of sector in partition is '00 7A 13 72' (hex) = 8 000 370 (dec)
+
+2. Extended partition:
+
+![Extended-partition](Extended-partition.png)
+
+## 4. FAT system
+
+### Random bs on file systems
+
+Many file systems existed:
+- FAT system
+    - FAT 12/ FAT16 for MSDOS 
+    - FAT32 from WIN98 
+    - 12/16/32: Number of bit to identify a cluster
+- NTFS 
+    - Used in WINNT, WIN2000 
+    - Utilize 64 bits to identify a cluster 
+    - Better than FAT in security, encoding, compress data,...
+- EXT3 
+    - Used in Linux
+- CDFS 
+    - File system used for CDROM 
+    - Limited depth in directory tree and size of names
+- UDF 
+    - Developed from CDFS for DVD-ROM, support long file name
+
+### 4.1. Boot sector
+1. Partitioning structure for FAT:
+
+- FAT12/16 
+    - Maximum number of cluster FAT12: 2^12 − 18; FAT16 : 2^16 − 18 
+    - Max size: FAT12: 32MB; FAT16: 2GB/4GB (32K/64K Cluster)
+- FAT32
+    - Only use 28 bits ⇒ Maximum Number of cluster: 2^28 − 18 
+    - Max size: 2TB/8GB/16TB (8KB/32KB/64KB Cluster)
+
+2. FAT structure:
+
+![FAT](FAT-structure.png)
+
+![FAT](FAT-structure2.png)
+
+![FAT](FAT-structure3.png)
+
+![FAT](FAT-structure4.png)
+
+![FAT](FAT-structure5.png)
+
+> ![NOTE]
+> Example: 
+> 1. FAT16: Chapter 4 - page 93 -> 144
+> 2. FAT32: Chapter 4 - page 116 -> 117, 119 -> 120
+
+### 4.1. FAT sector
+
+1. Objective:
+
+- FAT utilized to manage memory blocks/clusters in the data area of storage memory
+- Using block
+- Allocated to each file/directory
+- Free block
+- Error block
+
+2. Method:
+
+![FAT](FAT-elements.png)
+
+
+### 4.3. Root directory
+
+1. Structure:
+
+- Table consists of file record
+- Each record size is 32 bytes and contains information involve one file/directory/ volume label
+
+- In FAT12/FAT16 
+    - Root directory lie right behind FAT 
+    - Size = Number of maximum elements in root directory * 32
+- FAT32
+    - Location is defined based on BPB 
+    - Filed #18: Number of ROOT’s first cluster
+    - Undefined size
+    - Support long file name (LFN: Long File Name) 
+    - One file may use more than 1 element
+
+2. Structure of one element:
+
+![FAT](Structure-of-1-element.png)
+
